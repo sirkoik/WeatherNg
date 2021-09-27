@@ -1,6 +1,6 @@
 {
   "name": "weather-ng",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -35,5 +35,10 @@
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "~1.7.0",
     "typescript": "~4.3.5"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "arrowParens": "avoid",
+    "trailingComma": "none"
   }
 }

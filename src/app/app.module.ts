@@ -7,6 +7,7 @@ import { WeatherItemComponent } from './components/weather-item/weather-item.com
 import { TemperatureConvertPipe } from './pipes/temperature-convert.pipe';
 import { RoundNumberPipe } from './pipes/round-number.pipe';
 import { CloudsVerbalPipe } from './pipes/clouds-verbal.pipe';
+import { SpeedConvertPipe } from './pipes/speed-convert.pipe';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { CloudsVerbalPipe } from './pipes/clouds-verbal.pipe';
     WeatherItemComponent,
     TemperatureConvertPipe,
     RoundNumberPipe,
-    CloudsVerbalPipe
+    CloudsVerbalPipe,
+    SpeedConvertPipe
   ],
   imports: [BrowserModule, HttpClientModule],
   providers: [],

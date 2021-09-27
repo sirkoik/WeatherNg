@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { WeatherService } from './weather.service';
+import { WeatherCondition } from './WeatherCondition';
 
 @Component({
   selector: 'app-root',
@@ -12,6 +13,11 @@ export class AppComponent implements OnInit {
   url = '';
   temperature = 0;
   clouds = 0;
+  weatherConditions: WeatherCondition[] = [];
+  wind = {
+    speed: 0,
+    direction: ''
+  };
 
   constructor(private weatherService: WeatherService) {}
 
@@ -24,8 +30,15 @@ export class AppComponent implements OnInit {
           response.coords.longitude
         )
         .subscribe(response => {
-          this.temperature = response.current.temp;
-          this.clouds = response.current.clouds;
+          const cur = response.current;
+
+          this.temperature = cur.temp;
+          this.clouds = cur.clouds;
+          this.weatherConditions = cur.weather;
+          this.wind = {
+            speed: cur.wind_speed,
+            direction: cur.wind_deg
+          };
         });
     });
   }

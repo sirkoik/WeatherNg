@@ -11,14 +11,22 @@ export class AppComponent implements OnInit {
 
   url = '';
   temperature = 0;
+  clouds = 0;
 
   constructor(private weatherService: WeatherService) {}
 
   ngOnInit() {
-    this.weatherService
-      .fetchWeather('onecall', 51.5, 0.128)
-      .subscribe(response => {
-        this.temperature = response.current.temp;
-      });
+    this.weatherService.getLoc().subscribe(response => {
+      this.weatherService
+        .fetchWeather(
+          'onecall',
+          response.coords.latitude,
+          response.coords.longitude
+        )
+        .subscribe(response => {
+          this.temperature = response.current.temp;
+          this.clouds = response.current.clouds;
+        });
+    });
   }
 }

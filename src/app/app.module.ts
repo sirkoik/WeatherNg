@@ -6,13 +6,15 @@ import { AppComponent } from './app.component';
 import { WeatherItemComponent } from './components/weather-item/weather-item.component';
 import { TemperatureConvertPipe } from './pipes/temperature-convert.pipe';
 import { RoundNumberPipe } from './pipes/round-number.pipe';
+import { CloudsVerbalPipe } from './pipes/clouds-verbal.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     WeatherItemComponent,
     TemperatureConvertPipe,
-    RoundNumberPipe
+    RoundNumberPipe,
+    CloudsVerbalPipe
   ],
   imports: [BrowserModule, HttpClientModule],
   providers: [],

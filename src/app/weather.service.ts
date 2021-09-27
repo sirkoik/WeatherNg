@@ -1,7 +1,8 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { ObserveOnOperator } from 'rxjs/internal/operators/observeOn';
+import { tap, catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -12,6 +13,8 @@ export class WeatherService {
   longitude = 20;
   place = 'London';
 
+  public isDayTime = false;
+
   private httpHeaders = new HttpHeaders({
     'Content-Type': 'application/json'
     // 'Access-Control-Allow-Origin': '*'
@@ -19,44 +22,38 @@ export class WeatherService {
 
   constructor(private http: HttpClient) {}
 
-  // try to autodetect location, and handle user decline or other error.
-  // TODO make this work with the Observable in fetchWeather.
-  getUserLocation() {
-    const getCoords = new Promise<GeolocationPosition>((resolve, reject) => {
-      navigator.geolocation.getCurrentPosition(
-        position => resolve(position),
-        positionError => reject(positionError),
-        {
-          enableHighAccuracy: true
-        }
-      );
-    })
-      .then(position => {
-        this.latitude = position.coords.latitude;
-        this.longitude = position.coords.longitude;
-
-        this.place = '';
-
-        this.fetchWeather('onecall', this.latitude, this.longitude).subscribe(
-          response => console.log(response)
+  // made getLoc an observable. This can be chained to the fetchWeather observable more easily.
+  // based partially on https://angular.io/guide/observables
+  // TODO chain the getLoc and fetchWeather Observables more efficiently. When the user changes location
+  // TODO from block to allow, possibly populate the new location in.
+  getLoc(): Observable<any> {
+    return new Observable(observer => {
+      if ('geolocation' in navigator) {
+        navigator.geolocation.getCurrentPosition(
+          position => observer.next(position),
+          positionError => {
+            observer.next(this.fillDefault());
+            observer.error(positionError);
+          },
+          {
+            enableHighAccuracy: true
+          }
         );
-      })
-      .catch(error => {
-        const errorType = Object.prototype.toString.apply(error);
-        if (
-          errorType === '[object GeolocationPositionError]' &&
-          error.code === 1
-        ) {
-          alert(
-            'It looks like you declined to share your location. Nothing wrong with that - who likes to be tracked?' +
-              '\n\nTo use the weather app, you can enter your location manually. If you enter your city name or zip code, the location data will be vague enough to protect your privacy but still relevant enough to provide weather information.' +
-              '\n\nOr, you could type in a different location to get weather for another place.'
-          );
-          //showLocPopup(true);
-        } else {
-          alert('General error: ' + error.message);
-        }
-      });
+      } else {
+        observer.next(this.fillDefault());
+        observer.error('Positioning unavailable.');
+      }
+    });
+  }
+
+  // fillDefault: fill the position with a default value if it's not available.
+  fillDefault(): Object {
+    return {
+      coords: {
+        latitude: this.latitude,
+        longitude: this.longitude
+      }
+    };
   }
 
   // fetchWeather
@@ -80,10 +77,19 @@ export class WeatherService {
         params: httpParams
       })
       .pipe(
+        tap(response => {
+          this.updateDayTime(response.current.sunrise, response.current.sunset);
+          console.log(response);
+        }),
         catchError((error, caught) => {
           console.log('error');
           return of([]);
         })
       );
+  }
+
+  updateDayTime(startTs: number, endTs: number) {
+    const ts = new Date().getTime();
+    this.isDayTime = ts >= startTs && ts < endTs;
   }
 }

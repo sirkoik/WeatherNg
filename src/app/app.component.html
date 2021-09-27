@@ -1,15 +1,9 @@
 <p>Welcome to the Weather app, Angular edition.</p>
 
 <div>
-  <div>22&deg; C</div>
-  <div>Mostly cloudy</div>
+  <div>{{ temperature | temperatureConvert: 'c' | roundNumber }}&deg; C</div>
+  <div>{{ clouds | cloudsVerbal }}</div>
   <div>(rain) 20%</div>
 </div>
 
-<p>{{ title }}</p>
 <p>{{ url }}</p>
-
-<p>
-  Temperature: {{ temperature | temperatureConvert: 'c' | roundNumber }}&deg; C,
-  {{ temperature | temperatureConvert: 'f' | roundNumber }}&deg; F
-</p>

@@ -1,9 +1,10 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, of, interval, timer } from 'rxjs';
 import { ObserveOnOperator } from 'rxjs/internal/operators/observeOn';
-import { tap, catchError } from 'rxjs/operators';
+import { tap, catchError, mergeMap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { DefaultGeolocationPosition } from './default-geolocation-position';
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +27,7 @@ export class WeatherService {
   // based partially on https://angular.io/guide/observables
   // TODO chain the getLoc and fetchWeather Observables more efficiently. When the user changes location
   // TODO from block to allow, possibly populate the new location in.
-  getLoc(): Observable<any> {
+  getLoc(): Observable<GeolocationPosition | DefaultGeolocationPosition> {
     return new Observable(observer => {
       if ('geolocation' in navigator) {
         navigator.geolocation.getCurrentPosition(
@@ -47,7 +48,8 @@ export class WeatherService {
   }
 
   // fillDefault: fill the position with a default value if it's not available.
-  fillDefault(): Object {
+
+  fillDefault(): DefaultGeolocationPosition {
     return {
       coords: {
         latitude: this.latitude,
@@ -72,7 +74,7 @@ export class WeatherService {
       appid: environment.openWeatherMap.key
     });
 
-    return this.http
+    const httpObs = this.http
       .get<any>(environment.openWeatherMap.endpointURL + '/' + type, {
         params: httpParams
       })
@@ -86,6 +88,13 @@ export class WeatherService {
           return of([]);
         })
       );
+
+    return timer(0, environment.refreshInterval).pipe(mergeMap(() => httpObs));
+    // return this.getLoc().pipe(
+    //   mergeMap(() =>
+    //     timer(0, environment.refreshInterval).pipe(mergeMap(() => httpObs))
+    //   )
+    // );
   }
 
   updateDayTime(startTs: number, endTs: number) {

@@ -4,6 +4,7 @@
 
 export const environment = {
   production: false,
+  refreshInterval: 60000,
   locationIq: {
     endpointURL: 'https://us1.locationiq.com',
     key: 'pk.5d8de80cc656acc11d9f866852d7642f'

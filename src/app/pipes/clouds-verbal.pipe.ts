@@ -11,7 +11,7 @@ export class CloudsVerbalPipe implements PipeTransform {
     const cloudiness = cloudinessPct / 100;
 
     // TODO in daytime, it's common to say "Sunny" instead of "Clear".
-    // TODO Check to make sure if this is working.
+    // TODO Check to make sure if this is working - probably need a BehaviorSubject to subscribe to changes
     // https://forecast.weather.gov/glossary.php?letter=s
     const dayStatement = this.weatherService.isDayTime ? 'Sunny' : 'Clear';
 

@@ -27,29 +27,25 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.weatherSubscription = this.weatherService
-      .getLoc()
-      .subscribe(response => {
-        this.weatherService
-          .fetchWeather(
-            'onecall',
-            response.coords.latitude,
-            response.coords.longitude
-          )
-          .subscribe(response => {
-            const cur = response.current;
-
-            this.temperature = cur.temp;
-            this.clouds = cur.clouds;
-            this.weatherConditions = cur.weather;
-            this.wind = {
-              speed: cur.wind_speed,
-              direction: cur.wind_deg
-            };
-          });
-      });
+      .fetchWeather('onecall')
+      .subscribe(response => this.populateWeather(response));
   }
 
   ngOnDestroy() {
     this.weatherSubscription.unsubscribe();
+  }
+
+  // populateWeather: update the GUI with weather data
+  // retrieved from the server.
+  populateWeather(response: any) {
+    const cur = response.current;
+
+    this.temperature = cur.temp;
+    this.clouds = cur.clouds;
+    this.weatherConditions = cur.weather;
+    this.wind = {
+      speed: cur.wind_speed,
+      direction: cur.wind_deg
+    };
   }
 }

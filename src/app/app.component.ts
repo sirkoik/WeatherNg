@@ -9,7 +9,7 @@ import { WeatherCondition } from './WeatherCondition';
   styleUrls: ['./app.component.sass']
 })
 export class AppComponent implements OnInit, OnDestroy {
-  title = 'Weather, Angular edition';
+  loading = true;
 
   url = '';
   temperature = 0;
@@ -47,5 +47,7 @@ export class AppComponent implements OnInit, OnDestroy {
       speed: cur.wind_speed,
       direction: cur.wind_deg
     };
+
+    this.loading = false;
   }
 }

@@ -99,6 +99,11 @@ export class WeatherService {
       .pipe(
         tap(response => {
           this.updateDayTime(response.current.sunrise, response.current.sunset);
+
+          //TODO move this elsewhere
+          document.body.className = this.isDayTime
+            ? 'daytime-bg'
+            : 'nighttime-bg';
           console.log(response);
         }),
         catchError((error, caught) => {

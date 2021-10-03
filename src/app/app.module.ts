@@ -8,6 +8,8 @@ import { TemperatureConvertPipe } from './pipes/temperature-convert.pipe';
 import { RoundNumberPipe } from './pipes/round-number.pipe';
 import { CloudsVerbalPipe } from './pipes/clouds-verbal.pipe';
 import { SpeedConvertPipe } from './pipes/speed-convert.pipe';
+import { FooterComponent } from './footer/footer.component';
+import { CompassComponent } from './compass/compass.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +18,9 @@ import { SpeedConvertPipe } from './pipes/speed-convert.pipe';
     TemperatureConvertPipe,
     RoundNumberPipe,
     CloudsVerbalPipe,
-    SpeedConvertPipe
+    SpeedConvertPipe,
+    FooterComponent,
+    CompassComponent
   ],
   imports: [BrowserModule, HttpClientModule],
   providers: [],

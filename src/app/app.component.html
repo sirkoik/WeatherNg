@@ -1,6 +1,7 @@
 <p>Welcome to the Weather app, Angular edition.</p>
 
-<div>
+<div *ngIf="loading">Loading...</div>
+<div *ngIf="!loading">
   <div>{{ temperature | temperatureConvert: 'c' | roundNumber }}&deg; C</div>
   <!-- <div>{{ clouds | cloudsVerbal }}</div> -->
   <!-- <div
@@ -9,6 +10,7 @@
     ^
   </div> -->
   <div>wind: {{ wind.speed | speedConvert: 'kmh' }} km/h</div>
+  <app-compass angle="{{ wind.direction }}"></app-compass>
   <div
     style="display: inline-flex; flex-direction: column; align-items: center"
     *ngFor="let weatherCondition of weatherConditions"
@@ -23,3 +25,5 @@
 </div>
 
 <p>{{ url }}</p>
+
+<app-footer></app-footer>

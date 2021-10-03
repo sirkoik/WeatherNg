@@ -13,6 +13,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   url = '';
   temperature = 0;
+  temperatureFeels = 0;
   clouds = 0;
   weatherConditions: WeatherCondition[] = [];
   wind = {
@@ -43,6 +44,7 @@ export class AppComponent implements OnInit, OnDestroy {
     const cur = response.current;
 
     this.temperature = cur.temp;
+    this.temperatureFeels = cur.feels_like;
     this.clouds = cur.clouds;
     this.weatherConditions = cur.weather;
     this.wind = {

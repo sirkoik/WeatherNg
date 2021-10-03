@@ -4,6 +4,16 @@
 <div *ngIf="!loading">
   <div class="temperature">
     {{ temperature | temperatureConvert: 'c' | roundNumber }}&deg; C
+    <span
+      *ngIf="
+        (temperature | temperatureConvert: 'c' | roundNumber) -
+          (temperatureFeels | temperatureConvert: 'c' | roundNumber) !==
+        0
+      "
+      class="feels-like"
+      >{{ temperatureFeels | temperatureConvert: 'c' | roundNumber }}&deg;
+      C</span
+    >
   </div>
   <!-- <div>{{ clouds | cloudsVerbal }}</div> -->
   <!-- <div
@@ -11,19 +21,17 @@
   >
     ^
   </div> -->
-  <div class="wind">wind: {{ wind.speed | speedConvert: 'kmh' }} km/h</div>
-  <app-compass angle="{{ wind.direction }}"></app-compass>
-  <div
-    class="conditions"
-    style="display: inline-flex; flex-direction: column; align-items: center"
-    *ngFor="let weatherCondition of weatherConditions"
-  >
-    <div>
+  <div class="wind">
+    <app-compass angle="{{ wind.direction }}"></app-compass>
+    <div>wind: {{ wind.speed | speedConvert: 'kmh' }} km/h</div>
+  </div>
+  <div class="conditions" *ngFor="let weatherCondition of weatherConditions">
+    <div class="condition">
       <img
         src="https://openweathermap.org/img/wn/{{ weatherCondition.icon }}.png"
       />
+      <div>{{ weatherCondition.description }}</div>
     </div>
-    <div>{{ weatherCondition.main }}</div>
   </div>
 </div>
 

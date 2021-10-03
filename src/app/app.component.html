@@ -26,17 +26,26 @@
   </div> -->
   <div class="wind">
     <app-compass angle="{{ weatherData.wind.direction }}"></app-compass>
-    <div>wind: {{ weatherData.wind.speed | speedConvert: 'kmh':1 }} km/h</div>
+    <div class="wind-subtypes">
+      <div>wind: {{ weatherData.wind.speed | speedConvert: 'kmh':1 }} km/h</div>
+      <div *ngIf="weatherData.wind.gust">
+        {{ weatherData.wind.gust | speedConvert: 'kmh':1 }} km/h gust
+      </div>
+    </div>
   </div>
-  <div
-    class="conditions"
-    *ngFor="let weatherCondition of weatherData.weatherConditions"
-  >
-    <div class="condition">
-      <img
-        src="https://openweathermap.org/img/wn/{{ weatherCondition.icon }}.png"
-      />
-      <div>{{ weatherCondition.description }}</div>
+  <div class="conditions-box">
+    <div
+      class="conditions"
+      *ngFor="let weatherCondition of weatherData.weatherConditions"
+    >
+      <div class="condition">
+        <img
+          src="https://openweathermap.org/img/wn/{{
+            weatherCondition.icon
+          }}.png"
+        />
+        <div>{{ weatherCondition.description }}</div>
+      </div>
     </div>
   </div>
 </div>

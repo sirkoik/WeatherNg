@@ -3,16 +3,19 @@
 <div *ngIf="loading">Loading...</div>
 <div *ngIf="!loading">
   <div class="temperature">
-    {{ temperature | temperatureConvert: 'c' | roundNumber }}&deg; C
+    {{ weatherData.temperature | temperatureConvert: 'c' | roundNumber }}&deg; C
     <span
       *ngIf="
-        (temperature | temperatureConvert: 'c' | roundNumber) -
-          (temperatureFeels | temperatureConvert: 'c' | roundNumber) !==
+        (weatherData.temperature | temperatureConvert: 'c' | roundNumber) -
+          (weatherData.temperatureFeels
+            | temperatureConvert: 'c'
+            | roundNumber) !==
         0
       "
       class="feels-like"
-      >{{ temperatureFeels | temperatureConvert: 'c' | roundNumber }}&deg;
-      C</span
+      >{{
+        weatherData.temperatureFeels | temperatureConvert: 'c' | roundNumber
+      }}&deg; C</span
     >
   </div>
   <!-- <div>{{ clouds | cloudsVerbal }}</div> -->
@@ -22,10 +25,13 @@
     ^
   </div> -->
   <div class="wind">
-    <app-compass angle="{{ wind.direction }}"></app-compass>
-    <div>wind: {{ wind.speed | speedConvert: 'kmh' }} km/h</div>
+    <app-compass angle="{{ weatherData.wind.direction }}"></app-compass>
+    <div>wind: {{ weatherData.wind.speed | speedConvert: 'kmh':1 }} km/h</div>
   </div>
-  <div class="conditions" *ngFor="let weatherCondition of weatherConditions">
+  <div
+    class="conditions"
+    *ngFor="let weatherCondition of weatherData.weatherConditions"
+  >
     <div class="condition">
       <img
         src="https://openweathermap.org/img/wn/{{ weatherCondition.icon }}.png"
@@ -34,7 +40,5 @@
     </div>
   </div>
 </div>
-
-<p>{{ url }}</p>
 
 <app-footer *ngIf="showTheCredits"></app-footer>

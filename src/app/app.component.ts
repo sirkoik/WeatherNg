@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { WeatherService } from './weather.service';
 import { WeatherCondition } from './WeatherCondition';
+import { WeatherData } from './WeatherData';
 
 @Component({
   selector: 'app-root',
@@ -11,14 +12,16 @@ import { WeatherCondition } from './WeatherCondition';
 export class AppComponent implements OnInit, OnDestroy {
   loading = true;
 
-  url = '';
-  temperature = 0;
-  temperatureFeels = 0;
-  clouds = 0;
-  weatherConditions: WeatherCondition[] = [];
-  wind = {
-    speed: 0,
-    direction: ''
+  // empty WeatherData object that is populated in the fetchWeater response.
+  weatherData: WeatherData = {
+    temperature: 0,
+    temperatureFeels: 0,
+    cloudCover: 0,
+    wind: {
+      speed: 0,
+      direction: 0
+    },
+    weatherConditions: []
   };
 
   showTheCredits = false;
@@ -43,14 +46,15 @@ export class AppComponent implements OnInit, OnDestroy {
   populateWeather(response: any) {
     const cur = response.current;
 
-    this.temperature = cur.temp;
-    this.temperatureFeels = cur.feels_like;
-    this.clouds = cur.clouds;
-    this.weatherConditions = cur.weather;
-    this.wind = {
+    this.weatherData.temperature = cur.temp;
+    this.weatherData.temperatureFeels = cur.feels_like;
+    this.weatherData.cloudCover = cur.clouds;
+    this.weatherData.weatherConditions = cur.weather;
+    this.weatherData.wind = {
       speed: cur.wind_speed,
       direction: cur.wind_deg
     };
+    if (cur.wind_gust) this.weatherData.wind.gust = cur.wind_gust;
 
     this.loading = false;
   }

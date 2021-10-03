@@ -2,13 +2,19 @@
 $font-stack:  Helvetica, sans-serif
 $primary-color: #333
 
+@mixin theme($bgUrl: './assets/images/cloudy-2680242_1920.jpg', $color: #333)
+  background: url($bgUrl)
+  background-position: right
+  color: $color
+
+
 body
-  font: 100% $font-stack
+  font: 150% $font-stack
   color: $primary-color
+  margin: 0.5rem
 
 .daytime-bg
-  background-color: green
-  background: url('./assets/images/cloudy-2680242_1920.jpg')
+  @include theme($bgUrl: './assets/images/cloudy-2680242_1920.jpg', $color: #333)
 
 .nighttime-bg
-  background: url('./assets/images/tree-736877_1280.jpg')
+  @include theme($bgUrl: './assets/images/tree-736877_1280.jpg', $color: #fff)

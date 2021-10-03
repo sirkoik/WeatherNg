@@ -1,5 +1,8 @@
-<div>
-  <div style="transform: rotate({{ angle }}deg)" title="{{ angle }} degrees">
+<div class="compass">
+  <div
+    [ngStyle]="{ transform: 'rotate(' + angle + 'deg)' }"
+    title="{{ angle }} degrees"
+  >
     <img src="../../assets/compass-needle.svg" />
   </div>
 </div>

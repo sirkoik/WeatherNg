@@ -1,17 +1,20 @@
-<p>Welcome to the Weather app, Angular edition.</p>
+<app-menu (showCreditsEvent)="showCredits($event)"></app-menu>
 
 <div *ngIf="loading">Loading...</div>
 <div *ngIf="!loading">
-  <div>{{ temperature | temperatureConvert: 'c' | roundNumber }}&deg; C</div>
+  <div class="temperature">
+    {{ temperature | temperatureConvert: 'c' | roundNumber }}&deg; C
+  </div>
   <!-- <div>{{ clouds | cloudsVerbal }}</div> -->
   <!-- <div
     style="display: inline-block; transform: rotate({{ wind.direction }}deg)"
   >
     ^
   </div> -->
-  <div>wind: {{ wind.speed | speedConvert: 'kmh' }} km/h</div>
+  <div class="wind">wind: {{ wind.speed | speedConvert: 'kmh' }} km/h</div>
   <app-compass angle="{{ wind.direction }}"></app-compass>
   <div
+    class="conditions"
     style="display: inline-flex; flex-direction: column; align-items: center"
     *ngFor="let weatherCondition of weatherConditions"
   >
@@ -26,4 +29,4 @@
 
 <p>{{ url }}</p>
 
-<app-footer></app-footer>
+<app-footer *ngIf="showTheCredits"></app-footer>

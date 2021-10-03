@@ -10,6 +10,7 @@ import { CloudsVerbalPipe } from './pipes/clouds-verbal.pipe';
 import { SpeedConvertPipe } from './pipes/speed-convert.pipe';
 import { FooterComponent } from './footer/footer.component';
 import { CompassComponent } from './compass/compass.component';
+import { MenuComponent } from './menu/menu.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { CompassComponent } from './compass/compass.component';
     CloudsVerbalPipe,
     SpeedConvertPipe,
     FooterComponent,
-    CompassComponent
+    CompassComponent,
+    MenuComponent
   ],
   imports: [BrowserModule, HttpClientModule],
   providers: [],

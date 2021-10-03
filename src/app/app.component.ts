@@ -20,6 +20,8 @@ export class AppComponent implements OnInit, OnDestroy {
     direction: ''
   };
 
+  showTheCredits = false;
+
   // subscribe to the weather http call Observable
   weatherSubscription!: Subscription;
 
@@ -49,5 +51,9 @@ export class AppComponent implements OnInit, OnDestroy {
     };
 
     this.loading = false;
+  }
+
+  showCredits(show: boolean) {
+    this.showTheCredits = show;
   }
 }

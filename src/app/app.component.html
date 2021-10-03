@@ -27,6 +27,7 @@
   <div class="wind">
     <app-compass angle="{{ weatherData.wind.direction }}"></app-compass>
     <div class="wind-subtypes">
+      <!-- TODO improve wind gust layout -->
       <div>wind: {{ weatherData.wind.speed | speedConvert: 'kmh':1 }} km/h</div>
       <div *ngIf="weatherData.wind.gust">
         {{ weatherData.wind.gust | speedConvert: 'kmh':1 }} km/h gust

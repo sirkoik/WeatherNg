@@ -11,6 +11,7 @@ import { SpeedConvertPipe } from './pipes/speed-convert.pipe';
 import { FooterComponent } from './footer/footer.component';
 import { CompassComponent } from './compass/compass.component';
 import { MenuComponent } from './menu/menu.component';
+import { UviComponent } from './components/uvi/uvi.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { MenuComponent } from './menu/menu.component';
     SpeedConvertPipe,
     FooterComponent,
     CompassComponent,
-    MenuComponent
+    MenuComponent,
+    UviComponent
   ],
   imports: [BrowserModule, HttpClientModule],
   providers: [],

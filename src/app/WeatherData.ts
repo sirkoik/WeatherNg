@@ -6,6 +6,7 @@ export type WeatherData = {
   temperature: number;
   temperatureFeels: number;
   cloudCover: number;
+  uvi: number;
   wind: {
     speed: number;
     direction: number;

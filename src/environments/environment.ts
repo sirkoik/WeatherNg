@@ -4,7 +4,10 @@
 
 export const environment = {
   production: false,
-  refreshInterval: 60000,
+  // API free call limit of 1000 requests per day.
+  // 1 / 5m = 480 requests daily potentially from auto refresh
+  // more from manual refresh
+  refreshInterval: 300000,
   locationIq: {
     endpointURL: 'https://us1.locationiq.com',
     key: 'pk.5d8de80cc656acc11d9f866852d7642f'

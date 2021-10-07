@@ -17,6 +17,7 @@ export class AppComponent implements OnInit, OnDestroy {
     temperature: 0,
     temperatureFeels: 0,
     cloudCover: 0,
+    uvi: 0,
     wind: {
       speed: 0,
       direction: 0
@@ -55,6 +56,7 @@ export class AppComponent implements OnInit, OnDestroy {
       direction: cur.wind_deg
     };
     if (cur.wind_gust) this.weatherData.wind.gust = cur.wind_gust;
+    this.weatherData.uvi = cur.uvi;
 
     this.loading = false;
   }

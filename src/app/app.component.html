@@ -24,7 +24,7 @@
   >
     ^
   </div> -->
-  <div class="wind">
+  <div *ngIf="weatherData.wind.speed > 0" class="wind">
     <app-compass angle="{{ weatherData.wind.direction }}"></app-compass>
     <div class="wind-subtypes">
       <!-- TODO improve wind gust layout -->
@@ -49,6 +49,7 @@
       </div>
     </div>
   </div>
+  <app-uvi *ngIf="weatherData.uvi > 0" [level]="weatherData.uvi"></app-uvi>
 </div>
 
 <app-footer *ngIf="showTheCredits"></app-footer>

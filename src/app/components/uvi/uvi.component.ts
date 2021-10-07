@@ -1,11 +1,17 @@
-import { Component, OnInit, Input } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  OnChanges,
+  SimpleChanges
+} from '@angular/core';
 
 @Component({
   selector: 'app-uvi',
   templateUrl: './uvi.component.html',
   styleUrls: ['./uvi.component.sass']
 })
-export class UviComponent implements OnInit {
+export class UviComponent implements OnInit, OnChanges {
   @Input() level: number = 0;
   colorClass = 'uvi-green';
 
@@ -13,6 +19,18 @@ export class UviComponent implements OnInit {
 
   ngOnInit(): void {
     this.colorClass = this.getColorclass();
+  }
+
+  // Change the colorClass every time the UV level changes
+  // from outside data.
+  // This only runs if the changes are made in the parent
+  // component, which is the behavior we want in this case.
+  ngOnChanges(changes: SimpleChanges): void {
+    let change = changes['level'];
+
+    if (!change.firstChange) {
+      this.colorClass = this.getColorclass();
+    }
   }
 
   getColorclass(): string {

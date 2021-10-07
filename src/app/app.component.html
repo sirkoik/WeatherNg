@@ -34,6 +34,9 @@
       </div>
     </div>
   </div>
+  <div class="humidity">
+    {{ weatherData.humidity }}
+  </div>
   <div class="conditions-box">
     <div
       class="conditions"
@@ -50,6 +53,7 @@
     </div>
   </div>
   <app-uvi *ngIf="weatherData.uvi > 0" [level]="weatherData.uvi"></app-uvi>
+  <!-- <app-uvi [level]="weatherData.uvi"></app-uvi> -->
 </div>
 
 <app-footer *ngIf="showTheCredits"></app-footer>

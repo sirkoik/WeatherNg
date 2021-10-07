@@ -17,6 +17,7 @@ export class AppComponent implements OnInit, OnDestroy {
     temperature: 0,
     temperatureFeels: 0,
     cloudCover: 0,
+    humidity: 0,
     uvi: 0,
     wind: {
       speed: 0,
@@ -50,6 +51,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.weatherData.temperature = cur.temp;
     this.weatherData.temperatureFeels = cur.feels_like;
     this.weatherData.cloudCover = cur.clouds;
+    this.weatherData.humidity = cur.humidity;
     this.weatherData.weatherConditions = cur.weather;
     this.weatherData.wind = {
       speed: cur.wind_speed,

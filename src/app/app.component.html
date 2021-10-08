@@ -13,7 +13,8 @@
         0
       "
       class="feels-like"
-      >{{
+      >feels like
+      {{
         weatherData.temperatureFeels | temperatureConvert: 'c' | roundNumber
       }}&deg; C</span
     >
@@ -34,8 +35,9 @@
       </div>
     </div>
   </div>
-  <div class="humidity">
-    {{ weatherData.humidity }}
+  <div class="humidity-box">
+    <div><img /></div>
+    <div>humidity: {{ weatherData.humidity }}%</div>
   </div>
   <div class="conditions-box">
     <div

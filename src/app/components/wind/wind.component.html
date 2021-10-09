@@ -1,5 +1,5 @@
 <div *ngIf="wind.speed > 0" class="wind">
-  <app-compass angle="{{ wind.direction }}"></app-compass>
+  <app-compass [angle]="wind.direction"></app-compass>
   <div class="wind-subtypes">
     <!-- TODO improve wind gust layout -->
     <div>wind: {{ wind.speed | speedConvert: 'kmh':1 }} km/h</div>

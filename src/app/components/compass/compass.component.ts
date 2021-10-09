@@ -6,7 +6,7 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./compass.component.sass']
 })
 export class CompassComponent implements OnInit {
-  @Input() angle: string = '0';
+  @Input() angle: number = 0;
 
   constructor() {}
 

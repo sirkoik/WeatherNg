@@ -2,60 +2,14 @@
 
 <div *ngIf="loading">Loading...</div>
 <div *ngIf="!loading">
-  <div class="temperature">
-    {{ weatherData.temperature | temperatureConvert: 'c' | roundNumber }}&deg; C
-    <span
-      *ngIf="
-        (weatherData.temperature | temperatureConvert: 'c' | roundNumber) -
-          (weatherData.temperatureFeels
-            | temperatureConvert: 'c'
-            | roundNumber) !==
-        0
-      "
-      class="feels-like"
-      >feels like
-      {{
-        weatherData.temperatureFeels | temperatureConvert: 'c' | roundNumber
-      }}&deg; C</span
-    >
-  </div>
-  <!-- <div>{{ clouds | cloudsVerbal }}</div> -->
-  <!-- <div
-    style="display: inline-block; transform: rotate({{ wind.direction }}deg)"
-  >
-    ^
-  </div> -->
-  <div *ngIf="weatherData.wind.speed > 0" class="wind">
-    <app-compass angle="{{ weatherData.wind.direction }}"></app-compass>
-    <div class="wind-subtypes">
-      <!-- TODO improve wind gust layout -->
-      <div>wind: {{ weatherData.wind.speed | speedConvert: 'kmh':1 }} km/h</div>
-      <div *ngIf="weatherData.wind.gust">
-        {{ weatherData.wind.gust | speedConvert: 'kmh':1 }} km/h gust
-      </div>
-    </div>
-  </div>
-  <div class="humidity-box">
-    <div><img /></div>
-    <div>humidity: {{ weatherData.humidity }}%</div>
-  </div>
-  <div class="conditions-box">
-    <div
-      class="conditions"
-      *ngFor="let weatherCondition of weatherData.weatherConditions"
-    >
-      <div class="condition">
-        <img
-          src="https://openweathermap.org/img/wn/{{
-            weatherCondition.icon
-          }}.png"
-        />
-        <div>{{ weatherCondition.description }}</div>
-      </div>
-    </div>
-  </div>
+  <app-temperature
+    [temperature]="weatherData.temperature"
+    [temperatureFeels]="weatherData.temperatureFeels"
+  ></app-temperature>
+  <app-wind [wind]="weatherData.wind"></app-wind>
+  <app-humidity [humidity]="weatherData.humidity"></app-humidity>
+  <app-conditions [conditions]="weatherData.weatherConditions"></app-conditions>
   <app-uvi *ngIf="weatherData.uvi > 0" [level]="weatherData.uvi"></app-uvi>
-  <!-- <app-uvi [level]="weatherData.uvi"></app-uvi> -->
 </div>
 
 <app-footer *ngIf="showTheCredits"></app-footer>

@@ -1,6 +1,7 @@
 // This structures the weather data response into a usable format that is type-safe.
 
 import { WeatherCondition } from './WeatherCondition';
+import { Wind } from './Wind';
 
 export type WeatherData = {
   temperature: number;
@@ -8,10 +9,6 @@ export type WeatherData = {
   cloudCover: number;
   humidity: number;
   uvi: number;
-  wind: {
-    speed: number;
-    direction: number;
-    gust?: number;
-  };
+  wind: Wind;
   weatherConditions: WeatherCondition[] | [];
 };

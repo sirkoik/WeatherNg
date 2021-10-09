@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { WeatherService } from '../weather.service';
+import { WeatherService } from '../../services/weather.service';
 
 @Pipe({
   name: 'cloudsVerbal'

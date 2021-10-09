@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of, timer } from 'rxjs';
 import { tap, catchError, mergeMap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { DefaultGeolocationPosition } from './default-geolocation-position';
+import { DefaultGeolocationPosition } from '../app/types/default-geolocation-position';
 
 @Injectable({
   providedIn: 'root'

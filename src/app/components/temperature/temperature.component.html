@@ -1,0 +1,13 @@
+<div class="temperature">
+  {{ temperature | temperatureConvert: 'c' | roundNumber }}&deg; C
+  <span
+    *ngIf="
+      (temperature | temperatureConvert: 'c' | roundNumber) -
+        (temperatureFeels | temperatureConvert: 'c' | roundNumber) !==
+      0
+    "
+    class="feels-like"
+    >feels like
+    {{ temperatureFeels | temperatureConvert: 'c' | roundNumber }}&deg; C</span
+  >
+</div>

@@ -8,10 +8,15 @@ import { TemperatureConvertPipe } from './pipes/temperature-convert.pipe';
 import { RoundNumberPipe } from './pipes/round-number.pipe';
 import { CloudsVerbalPipe } from './pipes/clouds-verbal.pipe';
 import { SpeedConvertPipe } from './pipes/speed-convert.pipe';
-import { FooterComponent } from './footer/footer.component';
-import { CompassComponent } from './compass/compass.component';
-import { MenuComponent } from './menu/menu.component';
+import { FooterComponent } from './ui/footer/footer.component';
+import { CompassComponent } from './components/compass/compass.component';
+import { MenuComponent } from './ui/menu/menu.component';
 import { UviComponent } from './components/uvi/uvi.component';
+import { TemperatureComponent } from './components/temperature/temperature.component';
+import { WindComponent } from './components/wind/wind.component';
+import { HumidityComponent } from './components/humidity/humidity.component';
+import { ConditionsComponent } from './components/conditions/conditions.component';
+import { CloudsComponent } from './components/clouds/clouds.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +29,12 @@ import { UviComponent } from './components/uvi/uvi.component';
     FooterComponent,
     CompassComponent,
     MenuComponent,
-    UviComponent
+    UviComponent,
+    TemperatureComponent,
+    WindComponent,
+    HumidityComponent,
+    ConditionsComponent,
+    CloudsComponent
   ],
   imports: [BrowserModule, HttpClientModule],
   providers: [],

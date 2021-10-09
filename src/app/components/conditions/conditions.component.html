@@ -1,0 +1,10 @@
+<div class="conditions-box">
+  <div class="conditions" *ngFor="let weatherCondition of conditions">
+    <div class="condition">
+      <img
+        src="https://openweathermap.org/img/wn/{{ weatherCondition.icon }}.png"
+      />
+      <div>{{ weatherCondition.description }}</div>
+    </div>
+  </div>
+</div>

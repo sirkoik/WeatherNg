@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import { WeatherService } from '../services/weather.service';
+import { WeatherService } from './services/weather.service';
 import { WeatherCondition } from './types/WeatherCondition';
 import { WeatherData } from './types/WeatherData';
 

@@ -11,6 +11,8 @@ export class TimespanPipe implements PipeTransform {
   transform(span: number, format?: string): string {
     if (!format) format = 'hms';
 
+    span = Math.abs(span);
+
     const hrs = (span - (span % 3600)) / 3600;
     const min = Math.floor((span % 3600) / 60);
     const sec = (span % 3600) % 60;

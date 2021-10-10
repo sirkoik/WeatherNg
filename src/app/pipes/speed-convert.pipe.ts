@@ -4,13 +4,17 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'speedConvert'
 })
 export class SpeedConvertPipe implements PipeTransform {
-  transform(speed: number, convertTo: string, places: number): number {
-    const places10 = Math.pow(10, places);
-
+  // speed (input) is always assumed to be meters per second
+  transform(speed: number, convertTo?: string): number {
     switch (convertTo) {
       case 'kmh':
-        return Math.round(places10 * speed * 3.6) / places10;
+        // m/s -> km/h
+        return speed * 3.6;
+      case 'mph':
+        // m/s -> mph
+        return speed * 2.236936;
       case 'mps':
+      // m/s
       default:
         return speed;
     }

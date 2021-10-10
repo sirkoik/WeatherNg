@@ -2,9 +2,13 @@
   <app-compass [angle]="wind.direction"></app-compass>
   <div class="wind-subtypes">
     <!-- TODO improve wind gust layout -->
-    <div>wind: {{ wind.speed | speedConvert: 'kmh':1 }} km/h</div>
-    <div *ngIf="wind.gust">
-      {{ wind.gust | speedConvert: 'kmh':1 }} km/h gust
+    <div>
+      wind: {{ wind.speed | speedConvert: 'kmh' | number: '1.0-1' }}
+      <span *ngIf="!wind.gust">km/h</span>
+      <span *ngIf="wind.gust">km/h, </span>
+      <span *ngIf="wind.gust"
+        >{{ wind.gust | speedConvert: 'kmh' | number: '1.0-1' }} km/h gust</span
+      >
     </div>
   </div>
 </div>

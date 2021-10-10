@@ -8,6 +8,10 @@ export type WeatherData = {
   temperatureFeels: number;
   cloudCover: number;
   humidity: number;
+  sun: {
+    sunrise: number;
+    sunset: number;
+  };
   uvi: number;
   wind: Wind;
   weatherConditions: WeatherCondition[] | [];

@@ -17,6 +17,8 @@ import { WindComponent } from './components/wind/wind.component';
 import { HumidityComponent } from './components/humidity/humidity.component';
 import { ConditionsComponent } from './components/conditions/conditions.component';
 import { CloudsComponent } from './components/clouds/clouds.component';
+import { SunComponent } from './components/sun/sun.component';
+import { TimespanPipe } from './pipes/timespan.pipe';
 
 @NgModule({
   declarations: [
@@ -34,7 +36,9 @@ import { CloudsComponent } from './components/clouds/clouds.component';
     WindComponent,
     HumidityComponent,
     ConditionsComponent,
-    CloudsComponent
+    CloudsComponent,
+    SunComponent,
+    TimespanPipe
   ],
   imports: [BrowserModule, HttpClientModule],
   providers: [],

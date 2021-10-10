@@ -1,0 +1,6 @@
+<ul>
+  <li>{{ sun.sunrise | date: 'mediumTime' }} sunrise</li>
+  <li>{{ sun.sunset | date: 'mediumTime' }} sunset</li>
+  <li>{{ dayPct * 864 | timespan: 'hm' }} daylight</li>
+  <li>{{ nightPct * 864 | timespan: 'hm' }} night</li>
+</ul>

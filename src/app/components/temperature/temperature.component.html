@@ -1,13 +1,8 @@
 <div class="temperature">
-  {{ temperature | temperatureConvert: 'c' | roundNumber }}&deg; C
-  <span
-    *ngIf="
-      (temperature | temperatureConvert: 'c' | roundNumber) -
-        (temperatureFeels | temperatureConvert: 'c' | roundNumber) !==
-      0
-    "
-    class="feels-like"
+  {{ temperature | temperatureConvert: 'c' | number: '1.0-1' }}&deg; C
+  <span *ngIf="temperatureDiff > 0.2" class="feels-like"
     >feels like
-    {{ temperatureFeels | temperatureConvert: 'c' | roundNumber }}&deg; C</span
+    {{ temperatureFeels | temperatureConvert: 'c' | number: '1.0-1' }}&deg;
+    C</span
   >
 </div>

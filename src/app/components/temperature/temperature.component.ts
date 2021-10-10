@@ -8,6 +8,7 @@ import { Component, Input, OnInit } from '@angular/core';
 export class TemperatureComponent implements OnInit {
   @Input() temperature: number = 0;
   @Input() temperatureFeels: number = 0;
+  temperatureDiff = Math.abs(this.temperature - this.temperatureFeels);
 
   constructor() {}
 

@@ -1,7 +1,8 @@
 <app-menu (showCreditsEvent)="showCredits($event)"></app-menu>
 
-<div *ngIf="loading">Loading...</div>
-<div *ngIf="!loading">
+<div *ngIf="loading" class="weather">Loading...</div>
+<div *ngIf="!loading" class="weather">
+  <div class="city">{{ weatherData.cityName }}</div>
   <app-temperature
     [temperature]="weatherData.temperature"
     [temperatureFeels]="weatherData.temperatureFeels"

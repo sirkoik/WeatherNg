@@ -9,7 +9,7 @@ export const environment = {
   // more from manual refresh
   refreshInterval: 300000,
   locationIq: {
-    endpointURL: 'https://us1.locationiq.com',
+    endpointURL: 'https://us1.locationiq.com/v1',
     key: 'pk.5d8de80cc656acc11d9f866852d7642f'
   },
   openWeatherMap: {

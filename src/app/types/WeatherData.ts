@@ -4,6 +4,7 @@ import { WeatherCondition } from './WeatherCondition';
 import { Wind } from './Wind';
 
 export type WeatherData = {
+  cityName: string;
   temperature: number;
   temperatureFeels: number;
   cloudCover: number;

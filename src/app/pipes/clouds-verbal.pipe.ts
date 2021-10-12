@@ -13,7 +13,7 @@ export class CloudsVerbalPipe implements PipeTransform {
     // TODO in daytime, it's common to say "Sunny" instead of "Clear".
     // TODO Check to make sure if this is working - probably need a BehaviorSubject to subscribe to changes
     // https://forecast.weather.gov/glossary.php?letter=s
-    const dayStatement = this.weatherService.isDayTime ? 'Sunny' : 'Clear';
+    const dayStatement = this.weatherService.isDaytime ? 'Sunny' : 'Clear';
 
     if (cloudiness < 1 / 8) return dayStatement;
     if (cloudiness >= 1 / 8 && cloudiness < 3 / 8)

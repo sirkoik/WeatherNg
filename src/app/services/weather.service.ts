@@ -1,23 +1,25 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable, of, timer } from 'rxjs';
-import { tap, catchError, mergeMap } from 'rxjs/operators';
+import { EventEmitter, Injectable } from '@angular/core';
+import { forkJoin, Observable, of, timer } from 'rxjs';
+import { tap, catchError, switchMap, concatMapTo } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+
 import { DefaultGeolocationPosition } from '../types/default-geolocation-position';
 
 @Injectable({
   providedIn: 'root'
 })
 export class WeatherService {
+  isDaytime = true;
+  initialRun = true;
+  updateDayNight: EventEmitter<boolean> = new EventEmitter();
+
   latitude = 45;
   longitude = 20;
   place = 'London';
 
-  public isDayTime = false;
-
   private httpHeaders = new HttpHeaders({
     'Content-Type': 'application/json'
-    // 'Access-Control-Allow-Origin': '*'
   });
 
   constructor(private http: HttpClient) {}
@@ -59,23 +61,45 @@ export class WeatherService {
   }
 
   // fetchWeather
-  // call getUserLocation, and then fetches weather data for that given location
-  // from the OpenWeatherMap server.
+  // call getUserLocation, then fetch detailed location data and weather data from the
+  // LocationIQ and OpenWeatherMap APIs, respectively.
   // @return Observable that can be subscribed to (load data after the HTTP request completes).
   // Runs on a timer based on environment.refreshInterval
   fetchWeather(type: string): Observable<any> {
+    // return the getUserLocation() observable, piped to a switchMap
+    // that joins two HttpClient.get() observables and returns a
+    // timer observable that is mapped to those two observables
+
     return this.getUserLocation().pipe(
-      mergeMap(location =>
-        timer(0, environment.refreshInterval).pipe(
-          mergeMap(() => {
-            return this.fetchWeatherFromServer(
-              type,
-              location.coords.latitude,
-              location.coords.longitude
-            );
+      switchMap(location => {
+        const detailedLocationObservable = this.fetchDetailedLocation(
+          location.coords.latitude,
+          location.coords.longitude
+        );
+
+        const weatherDataObservable = this.fetchWeatherFromServer(
+          type,
+          location.coords.latitude,
+          location.coords.longitude
+        );
+
+        // Wait for the two HttpClient.get observables to complete, then
+        // pass the results into a new observable with outputs data from
+        // both observables.
+        const obs = forkJoin([
+          detailedLocationObservable,
+          weatherDataObservable
+        ]);
+
+        // Create a timer observable to periodically refresh. Map to the
+        // joined HttpClient.get observables.
+        return timer(0, environment.refreshInterval).pipe(
+          concatMapTo(obs),
+          tap(() => {
+            this.initialRun = false;
           })
-        )
-      )
+        );
+      })
     );
   }
 
@@ -98,23 +122,55 @@ export class WeatherService {
       })
       .pipe(
         tap(response => {
-          this.updateDayTime(response.current.sunrise, response.current.sunset);
+          // update day/night by emitting event that the app component listens to.
+          const isDaytime = this.getIsDaytime(
+            response.current.sunrise,
+            response.current.sunset
+          );
 
-          //TODO move this elsewhere
-          document.body.className = this.isDayTime
-            ? 'daytime-bg'
-            : 'nighttime-bg';
-          console.log(response);
+          if (this.initialRun || isDaytime != this.isDaytime) {
+            this.isDaytime = isDaytime;
+            this.updateDayNight.next(isDaytime);
+          }
+
+          console.log('OpenWeatherMap response', response);
         }),
         catchError((error, caught) => {
-          console.log('error');
+          console.log('error with OpenWeatherMap');
           return of([]);
         })
       );
   }
 
-  updateDayTime(startTs: number, endTs: number) {
-    const ts = new Date().getTime();
-    this.isDayTime = ts >= startTs && ts < endTs;
+  // fetchDetailedLocation: Get detailed location data for a given latitude and longitude.
+  fetchDetailedLocation(latitude: number, longitude: number) {
+    const httpParams = new HttpParams().appendAll({
+      lat: latitude,
+      lon: longitude,
+      key: environment.locationIq.key,
+      format: 'json'
+    });
+
+    return this.http
+      .get<any>(environment.locationIq.endpointURL + '/reverse.php', {
+        params: httpParams
+      })
+      .pipe(
+        tap(response => {
+          console.log('locationIq response', response);
+        }),
+        catchError((error, caught) => {
+          console.log('error with locationIQ');
+          // TODO return generic / error city information if locationIQ endpoint doesn't work.
+          return of([]);
+        })
+      );
+  }
+
+  // get is day/night
+  // TODO change to an interval format
+  getIsDaytime(sunriseTsSec: number, sunsetTsSec: number) {
+    const tsSec = new Date().getTime() / 1000;
+    return tsSec >= sunriseTsSec && tsSec < sunsetTsSec;
   }
 }

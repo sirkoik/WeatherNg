@@ -6,17 +6,22 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./moon.component.sass']
 })
 export class MoonComponent implements OnInit {
-  phase = 0;
+  moon: { phase: string; illumination: number } = {
+    phase: '',
+    illumination: 0
+  };
   constructor() {}
 
   ngOnInit(): void {
-    this.phase = this.getPhase();
+    this.moon = this.getPhase();
   }
 
   // code adapted from Jason Sturges
   // https://jasonsturges.medium.com/moons-lunar-phase-in-javascript-a5219acbfe6e
+  // added adjustment factor based on
+  // https://stardate.org/nightsky/moon
   // TODO this appears to be slightly inaccurate.
-  getPhase(): number {
+  getPhase(): { phase: string; illumination: number } {
     const getJulianDate = (date: Date = new Date()): number => {
       const t = date.getTime();
       const offset = date.getTimezoneOffset();
@@ -31,9 +36,21 @@ export class MoonComponent implements OnInit {
     let lunarPctNormalized = lunarPct - Math.floor(lunarPct);
     if (lunarPctNormalized < 0) lunarPctNormalized += 1;
 
-    console.log(lunarPctNormalized);
-    console.log(lunarPctNormalized * LUNAR_MONTH);
+    const pctLunation = (1.1 + lunarPctNormalized * LUNAR_MONTH) / LUNAR_MONTH;
+    const pctIllumination =
+      pctLunation < 1 ? 2 * pctLunation : 2 * (1 - pctLunation);
 
-    return lunarPctNormalized;
+    let phase = 'new moon';
+    if (pctLunation > 0) phase = 'new moon';
+    if (pctLunation > 0.05) phase = 'waxing crescent';
+    if (pctLunation > 0.2) phase = 'first quarter';
+    if (pctLunation > 0.3) phase = 'waxing gibbous';
+    if (pctLunation > 0.48) phase = 'full';
+    if (pctLunation > 0.52) phase = 'waning gibbous';
+    if (pctLunation > 0.7) phase = 'last quarter';
+    if (pctLunation > 0.8) phase = 'waning crescent';
+    if (pctLunation > 0.95) phase = 'new moon';
+
+    return { phase: phase, illumination: 100 * pctIllumination };
   }
 }

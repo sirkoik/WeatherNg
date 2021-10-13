@@ -19,6 +19,7 @@ import { ConditionsComponent } from './components/conditions/conditions.componen
 import { CloudsComponent } from './components/clouds/clouds.component';
 import { SunComponent } from './components/sun/sun.component';
 import { TimespanPipe } from './pipes/timespan.pipe';
+import { MoonComponent } from './components/moon/moon.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { TimespanPipe } from './pipes/timespan.pipe';
     ConditionsComponent,
     CloudsComponent,
     SunComponent,
-    TimespanPipe
+    TimespanPipe,
+    MoonComponent
   ],
   imports: [BrowserModule, HttpClientModule],
   providers: [],

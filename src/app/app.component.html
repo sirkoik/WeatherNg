@@ -12,6 +12,7 @@
   <app-conditions [conditions]="weatherData.weatherConditions"></app-conditions>
   <app-uvi *ngIf="weatherData.uvi > 0" [level]="weatherData.uvi"></app-uvi>
   <app-sun [sun]="weatherData.sun"></app-sun>
+  <app-moon></app-moon>
 </div>
 
 <app-footer *ngIf="showTheCredits"></app-footer>

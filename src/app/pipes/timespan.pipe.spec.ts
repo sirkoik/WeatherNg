@@ -6,6 +6,26 @@ describe('TimespanPipe', () => {
     expect(pipe).toBeTruthy();
   });
 
+  it('should return "0s" when 0 seconds is supplied', () => {
+    const pipe = new TimespanPipe();
+    expect(pipe.transform(0)).toBe('0s');
+  });
+
+  it('should return "1s" when 1 seconds is supplied', () => {
+    const pipe = new TimespanPipe();
+    expect(pipe.transform(1)).toBe('1s');
+  });
+
+  it('should return "5s" when 5 seconds is supplied', () => {
+    const pipe = new TimespanPipe();
+    expect(pipe.transform(5)).toBe('5s');
+  });
+
+  it('should return "1m" when 60 seconds is supplied', () => {
+    const pipe = new TimespanPipe();
+    expect(pipe.transform(60)).toBe('1m');
+  });
+
   it('should return "24h" when 86400 seconds is supplied', () => {
     const pipe = new TimespanPipe();
     expect(pipe.transform(86400)).toBe('24h');
@@ -29,11 +49,6 @@ describe('TimespanPipe', () => {
   it('should return "12h 59s" when 43259 seconds is supplied', () => {
     const pipe = new TimespanPipe();
     expect(pipe.transform(43259)).toBe('12h 59s');
-  });
-
-  it('should return "0s" when 0 seconds is supplied', () => {
-    const pipe = new TimespanPipe();
-    expect(pipe.transform(0)).toBe('0s');
   });
 
   it('should return "12h" when 43323 seconds is supplied with format "h"', () => {

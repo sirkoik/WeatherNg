@@ -5,6 +5,7 @@ import { tap, catchError, switchMap, concatMapTo } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 
 import { DefaultGeolocationPosition } from '../types/default-geolocation-position';
+import { RefreshIndicatorService } from './refresh-indicator.service';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +23,10 @@ export class WeatherService {
     'Content-Type': 'application/json'
   });
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private refreshIndicatorService: RefreshIndicatorService
+  ) {}
 
   // getUserLocation: Fetch the user location and pass it along to the next Observable.
   // If the user declines to share their location, supply a default location (London).
@@ -96,6 +100,9 @@ export class WeatherService {
         return timer(0, environment.refreshInterval).pipe(
           concatMapTo(obs),
           tap(() => {
+            if (this.initialRun) {
+              this.refreshIndicatorService.subscribeToRefresh();
+            }
             this.initialRun = false;
           })
         );

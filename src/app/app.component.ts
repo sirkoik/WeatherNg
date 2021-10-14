@@ -5,6 +5,7 @@ import {
   SystemJsNgModuleLoader
 } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
+import { RefreshIndicatorService } from './services/refresh-indicator.service';
 import { WeatherService } from './services/weather.service';
 import { WeatherCondition } from './types/WeatherCondition';
 import { WeatherData } from './types/WeatherData';
@@ -45,6 +46,7 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(private weatherService: WeatherService) {}
 
   ngOnInit() {
+    // subscribe to the continuous weather fetching Observable
     this.weatherSubscription = this.weatherService
       .fetchWeather('onecall')
       .subscribe(response => this.populateWeather(response));

@@ -20,6 +20,7 @@ import { CloudsComponent } from './components/clouds/clouds.component';
 import { SunComponent } from './components/sun/sun.component';
 import { TimespanPipe } from './pipes/timespan.pipe';
 import { MoonComponent } from './components/moon/moon.component';
+import { RefreshIndicatorComponent } from './ui/refresh-indicator/refresh-indicator.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { MoonComponent } from './components/moon/moon.component';
     CloudsComponent,
     SunComponent,
     TimespanPipe,
-    MoonComponent
+    MoonComponent,
+    RefreshIndicatorComponent
   ],
   imports: [BrowserModule, HttpClientModule],
   providers: [],

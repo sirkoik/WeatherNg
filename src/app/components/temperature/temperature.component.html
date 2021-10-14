@@ -1,8 +1,9 @@
 <div class="temperature">
-  {{ temperature | temperatureConvert: 'c' | number: '1.0-1' }}&deg; C
+  {{ temperature | temperatureConvert: tempConvertTo | number: '1.0-1' }}&deg; C
   <span *ngIf="temperatureDiff > 0.2" class="feels-like"
     >feels like
-    {{ temperatureFeels | temperatureConvert: 'c' | number: '1.0-1' }}&deg;
-    C</span
+    {{
+      temperatureFeels | temperatureConvert: tempConvertTo | number: '1.0-1'
+    }}&deg; C</span
   >
 </div>

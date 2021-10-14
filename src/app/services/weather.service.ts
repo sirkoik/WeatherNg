@@ -11,6 +11,7 @@ import { RefreshIndicatorService } from './refresh-indicator.service';
   providedIn: 'root'
 })
 export class WeatherService {
+  isMetric = true;
   isDaytime = true;
   initialRun = true;
   updateDayNight: EventEmitter<boolean> = new EventEmitter();
@@ -88,7 +89,7 @@ export class WeatherService {
         );
 
         // Wait for the two HttpClient.get observables to complete, then
-        // pass the results into a new observable with outputs data from
+        // pass the results into a new observable which outputs data from
         // both observables.
         const obs = forkJoin([
           detailedLocationObservable,

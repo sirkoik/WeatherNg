@@ -1,4 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Observable, timer } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-sun',
@@ -14,6 +16,11 @@ export class SunComponent implements OnInit {
   dayPct = 0;
   nightPct = 0;
 
+  tilSunrise = 0;
+  tilSunset = 0;
+  sinceSunrise = 0;
+  sinceSunset = 0;
+
   constructor() {}
 
   ngOnInit(): void {
@@ -23,6 +30,22 @@ export class SunComponent implements OnInit {
       (100 * (this.sun.sunset - this.sun.sunrise)) /
       (this.dayEnd - this.dayStart);
     this.nightPct = 100 - this.dayPct;
+
+    // update "time til / since" sunrise/sunset every five seconds.
+    // this could be done with a setInterval, but an RxJS Observable
+    // allows it to be started immediately with one statement.
+    const sunObs = new Observable(observer => {
+      const now = new Date().getTime();
+
+      this.tilSunrise = this.sun.sunrise - now;
+      this.tilSunset = this.sun.sunset - now;
+      this.sinceSunrise = now - this.sun.sunrise;
+      this.sinceSunset = now - this.sun.sunset;
+    });
+
+    timer(0, 5000)
+      .pipe(switchMap(() => sunObs))
+      .subscribe();
   }
 
   tsToDate(ts: number): Date {

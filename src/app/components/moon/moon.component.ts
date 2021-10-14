@@ -20,7 +20,7 @@ export class MoonComponent implements OnInit {
   // https://jasonsturges.medium.com/moons-lunar-phase-in-javascript-a5219acbfe6e
   // added adjustment factor based on
   // https://stardate.org/nightsky/moon
-  // TODO this appears to be slightly inaccurate.
+  // TODO moon phase is still somewhat inaccurate.
   getPhase(): { phase: string; illumination: number } {
     const getJulianDate = (date: Date = new Date()): number => {
       const t = date.getTime();

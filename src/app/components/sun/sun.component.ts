@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Observable, timer } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
+import { Sun } from 'src/app/types/Sun';
 
 @Component({
   selector: 'app-sun',
@@ -8,7 +9,7 @@ import { switchMap } from 'rxjs/operators';
   styleUrls: ['./sun.component.sass']
 })
 export class SunComponent implements OnInit {
-  @Input() sun: any;
+  @Input() sun: Sun;
 
   dayStart = 0;
   dayEnd = 0;
@@ -21,7 +22,12 @@ export class SunComponent implements OnInit {
   sinceSunrise = 0;
   sinceSunset = 0;
 
-  constructor() {}
+  constructor() {
+    this.sun = {
+      sunrise: 0,
+      sunset: 0
+    };
+  }
 
   ngOnInit(): void {
     this.dayStart = this.sun.sunrise - (this.sun.sunrise % 8.64e7);

@@ -7,6 +7,7 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class CloudsComponent implements OnInit {
   @Input() clouds: number = 0;
+  @Input() isDaytime: boolean = true;
 
   constructor() {}
 

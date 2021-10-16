@@ -13,6 +13,7 @@ import {
 } from '../store/mode.actions';
 
 import { DefaultGeolocationPosition } from '../types/default-geolocation-position';
+import { DefaultLocation } from '../types/DefaultLocation';
 import { RefreshIndicatorService } from './refresh-indicator.service';
 
 @Injectable({
@@ -21,9 +22,14 @@ import { RefreshIndicatorService } from './refresh-indicator.service';
 export class WeatherService {
   initialRun = true;
   refresh = true;
-  latitude = 45;
-  longitude = 20;
+  latitude = 51.509865;
+  longitude = -0.118092;
   place = 'London';
+  defaultLocation: DefaultLocation = {
+    address: {
+      city: 'London'
+    }
+  };
 
   private httpHeaders = new HttpHeaders({
     'Content-Type': 'application/json'
@@ -182,8 +188,7 @@ export class WeatherService {
         }),
         catchError((error, caught) => {
           console.log('error with locationIQ');
-          // TODO return generic / error city information if locationIQ endpoint doesn't work.
-          return of([]);
+          return of(this.defaultLocation);
         })
       );
   }

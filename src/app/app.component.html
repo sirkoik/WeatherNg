@@ -1,7 +1,15 @@
-<app-refresh-indicator></app-refresh-indicator>
-<app-menu (showCreditsEvent)="showCredits($event)"></app-menu>
+<app-overlay *ngIf="loading">
+  <app-loading-spinner></app-loading-spinner>
+</app-overlay>
 
-<div *ngIf="loading" class="weather">Loading...</div>
+<app-overlay *ngIf="showAbout$ | async" (click)="hideAboutBox()">
+  <app-about></app-about>
+</app-overlay>
+
+<app-refresh-indicator *ngIf="!loading"></app-refresh-indicator>
+
+<app-menu></app-menu>
+
 <div *ngIf="!loading" class="weather">
   <div class="city">{{ weatherData.cityName }}</div>
   <app-temperature
@@ -15,5 +23,3 @@
   <app-sun [sun]="weatherData.sun"></app-sun>
   <app-moon></app-moon>
 </div>
-
-<app-footer *ngIf="showTheCredits"></app-footer>

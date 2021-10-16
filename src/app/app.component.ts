@@ -1,8 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, ObservableInput, Subscription } from 'rxjs';
 import { WeatherState } from './app.module';
 import { WeatherService } from './services/weather.service';
+import { hideAbout, setLoading } from './store/mode.actions';
 import { WeatherData } from './types/WeatherData';
 
 @Component({
@@ -13,6 +14,7 @@ import { WeatherData } from './types/WeatherData';
 export class AppComponent implements OnInit, OnDestroy {
   loading = true;
   isDay = true;
+  showAbout = false;
 
   // empty WeatherData object that is populated in the fetchWeater response.
   weatherData: WeatherData = {
@@ -33,16 +35,19 @@ export class AppComponent implements OnInit, OnDestroy {
     weatherConditions: []
   };
 
-  showTheCredits = false;
-
   // subscribe to the weather http call Observable
-  weatherSubscription!: Subscription;
+  weatherSubscription: Subscription;
   dayNightSubscription: Subscription;
+  loadingSubscription: Subscription;
+
+  showAbout$: Observable<boolean>;
 
   constructor(
     private weatherService: WeatherService,
     private store: Store<WeatherState>
   ) {
+    store.dispatch(setLoading({ isLoading: true }));
+
     // subscribe to the continuous weather fetching Observable
     this.weatherSubscription = this.weatherService
       .fetchWeather('onecall')
@@ -50,12 +55,20 @@ export class AppComponent implements OnInit, OnDestroy {
 
     // subscribe to the day/night status in the mode state slice
     this.dayNightSubscription = store
-      .select(state => state)
-      .subscribe(response => {
-        this.isDay = response.modeReducer.isDaytime;
+      .select(state => state.modeReducer.isDaytime)
+      .subscribe(isDayTime => {
+        this.isDay = isDayTime;
         document.body.className = this.isDay ? 'daytime-bg' : 'nighttime-bg';
         console.log('[AppComponent] isDay? ', this.isDay);
       });
+
+    this.loadingSubscription = store
+      .select(state => state.modeReducer.isLoading)
+      .subscribe(isLoading => {
+        this.loading = isLoading;
+      });
+
+    this.showAbout$ = store.select(state => state.modeReducer.showAbout);
   }
 
   ngOnInit() {}
@@ -94,10 +107,10 @@ export class AppComponent implements OnInit, OnDestroy {
     if (cur.wind_gust) this.weatherData.wind.gust = cur.wind_gust;
     this.weatherData.uvi = cur.uvi;
 
-    this.loading = false;
+    this.store.dispatch(setLoading({ isLoading: false }));
   }
 
-  showCredits(show: boolean) {
-    this.showTheCredits = show;
+  hideAboutBox() {
+    this.store.dispatch(hideAbout());
   }
 }

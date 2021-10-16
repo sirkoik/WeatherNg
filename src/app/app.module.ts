@@ -8,7 +8,6 @@ import { TemperatureConvertPipe } from './pipes/temperature-convert.pipe';
 import { RoundNumberPipe } from './pipes/round-number.pipe';
 import { CloudsVerbalPipe } from './pipes/clouds-verbal.pipe';
 import { SpeedConvertPipe } from './pipes/speed-convert.pipe';
-import { FooterComponent } from './ui/footer/footer.component';
 import { CompassComponent } from './components/compass/compass.component';
 import { MenuComponent } from './ui/menu/menu.component';
 import { UviComponent } from './components/uvi/uvi.component';
@@ -26,6 +25,9 @@ import { unitsReducer } from './store/units.reducer';
 import { UnitsState } from './types/UnitsState';
 import { modeReducer } from './store/mode.reducer';
 import { ModeState } from './types/ModeState';
+import { OverlayComponent } from './ui/overlay/overlay.component';
+import { LoadingSpinnerComponent } from './ui/loading-spinner/loading-spinner.component';
+import { AboutComponent } from './ui/about/about.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +37,6 @@ import { ModeState } from './types/ModeState';
     RoundNumberPipe,
     CloudsVerbalPipe,
     SpeedConvertPipe,
-    FooterComponent,
     CompassComponent,
     MenuComponent,
     UviComponent,
@@ -47,7 +48,10 @@ import { ModeState } from './types/ModeState';
     SunComponent,
     TimespanPipe,
     MoonComponent,
-    RefreshIndicatorComponent
+    RefreshIndicatorComponent,
+    OverlayComponent,
+    LoadingSpinnerComponent,
+    AboutComponent
   ],
   imports: [
     BrowserModule,

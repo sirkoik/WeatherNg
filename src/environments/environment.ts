@@ -15,6 +15,9 @@ export const environment = {
   openWeatherMap: {
     endpointURL: 'https://api.openweathermap.org/data/2.5',
     key: '6b80ba80e350de60e41ab0ccf87ad068'
+  },
+  author: {
+    webUrl: 'https://sirkoik.github.io'
   }
 };
 

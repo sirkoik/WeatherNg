@@ -4,12 +4,17 @@ import {
   setDay,
   setDayNightCalculationNotPossible,
   setDayNightCalculationPossible,
-  setNight
+  setNight,
+  setLoading,
+  showAbout,
+  hideAbout
 } from './mode.actions';
 
 export const initialState: ModeState = {
   dayNightCalculationIsPossible: false,
-  isDaytime: true
+  isDaytime: true,
+  isLoading: true,
+  showAbout: false
 };
 
 const _modeReducer = createReducer(
@@ -25,6 +30,15 @@ const _modeReducer = createReducer(
   }),
   on(setDayNightCalculationNotPossible, state => {
     return { ...state, dayNightCalculationIsPossible: false };
+  }),
+  on(setLoading, (state, action) => {
+    return { ...state, isLoading: action.isLoading };
+  }),
+  on(showAbout, (state, action) => {
+    return { ...state, showAbout: true };
+  }),
+  on(hideAbout, (state, action) => {
+    return { ...state, showAbout: false };
   })
 );
 

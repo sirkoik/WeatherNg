@@ -2,6 +2,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { WeatherState } from 'src/app/app.module';
+import { showAbout } from 'src/app/store/mode.actions';
 import { toggle } from 'src/app/store/units.actions';
 
 @Component({
@@ -13,7 +14,6 @@ export class MenuComponent implements OnInit {
   @Output() showCreditsEvent = new EventEmitter<boolean>();
   unitsToggleTo$: Observable<string>;
 
-  showTheCredits = false;
   showMenu = false;
 
   constructor(private store: Store<WeatherState>) {
@@ -26,8 +26,7 @@ export class MenuComponent implements OnInit {
     this.store.dispatch(toggle());
   }
 
-  toggleCredits(): void {
-    this.showTheCredits = !this.showTheCredits;
-    this.showCreditsEvent.emit(this.showTheCredits);
+  showAboutBox(): void {
+    this.store.dispatch(showAbout());
   }
 }

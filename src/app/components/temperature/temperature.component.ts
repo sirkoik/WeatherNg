@@ -1,4 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { State } from 'src/app/app.module';
 import { WeatherService } from 'src/app/services/weather.service';
 
 @Component({
@@ -9,13 +12,26 @@ import { WeatherService } from 'src/app/services/weather.service';
 export class TemperatureComponent implements OnInit {
   @Input() temperature: number = 0;
   @Input() temperatureFeels: number = 0;
+  //tempUnits$: Observable<string>;
 
   tempConvertTo = 'c';
 
   temperatureDiff = Math.abs(this.temperature - this.temperatureFeels);
 
-  constructor(private weatherService: WeatherService) {
-    //this.tempConvertTo = weatherService.isMetric ? 'c' : 'f';
+  constructor(private store: Store<State>) {
+    console.log(
+      '[Temperature] temperatureDiff between temp and feels',
+      this.temperatureDiff
+    );
+    //this.tempUnits$ = store.select(state => state.unitsReducer.temp);
+
+    store
+      .select(state => state)
+      .subscribe(response => {
+        this.tempConvertTo =
+          response.unitsReducer.units === 'metric' ? 'c' : 'f';
+        console.log('[Temperature] tempConvertTo', this.tempConvertTo);
+      });
   }
 
   ngOnInit(): void {}

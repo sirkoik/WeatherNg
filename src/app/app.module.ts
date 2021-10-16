@@ -21,6 +21,9 @@ import { SunComponent } from './components/sun/sun.component';
 import { TimespanPipe } from './pipes/timespan.pipe';
 import { MoonComponent } from './components/moon/moon.component';
 import { RefreshIndicatorComponent } from './ui/refresh-indicator/refresh-indicator.component';
+import { StoreModule } from '@ngrx/store';
+import { unitsReducer } from './store/units.reducer';
+import { UnitsState } from './types/UnitsState';
 
 @NgModule({
   declarations: [
@@ -44,8 +47,16 @@ import { RefreshIndicatorComponent } from './ui/refresh-indicator/refresh-indica
     MoonComponent,
     RefreshIndicatorComponent
   ],
-  imports: [BrowserModule, HttpClientModule],
+  imports: [
+    BrowserModule,
+    HttpClientModule,
+    StoreModule.forRoot({ unitsReducer: unitsReducer }, {})
+  ],
   providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
+
+export interface State {
+  unitsReducer: UnitsState;
+}

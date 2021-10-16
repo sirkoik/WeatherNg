@@ -1,6 +1,8 @@
 <div class="menu" (click)="showCredits(); showMenu = !showMenu"></div>
 <div class="menu-pane" *ngIf="showMenu" (click)="showMenu = false">
   <ol>
-    <li><button (click)="toggleMetric()">Metric</button></li>
+    <li>
+      <button (click)="toggleMetric()">{{ units$ | async }}</button>
+    </li>
   </ol>
 </div>

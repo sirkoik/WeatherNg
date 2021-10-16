@@ -1,4 +1,8 @@
-<div class="menu" (click)="showMenu = !showMenu"></div>
+<div class="menu" (click)="showMenu = !showMenu">
+  <div class="menu-bar"></div>
+  <div class="menu-bar"></div>
+  <div class="menu-bar"></div>
+</div>
 <div class="menu-pane" *ngIf="showMenu" (click)="showMenu = false">
   <ol>
     <li>
@@ -11,3 +15,8 @@
     </li>
   </ol>
 </div>
+<div
+  class="menu-overlay-under"
+  *ngIf="showMenu"
+  (click)="showMenu = false"
+></div>

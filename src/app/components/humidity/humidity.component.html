@@ -1,4 +1,6 @@
 <div class="humidity-box">
-  <div><img /></div>
+  <div class="humidity-graphic">
+    <div class="humidity-bar" [ngStyle]="{ height: humidity + '%' }"></div>
+  </div>
   <div>humidity: {{ humidity }}%</div>
 </div>

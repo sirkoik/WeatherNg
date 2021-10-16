@@ -1,9 +1,8 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { State } from 'src/app/app.module';
+import { WeatherState } from 'src/app/app.module';
 import { toggle } from 'src/app/store/units.actions';
-import { UnitsState } from 'src/app/types/UnitsState';
 
 @Component({
   selector: 'app-menu',
@@ -17,7 +16,7 @@ export class MenuComponent implements OnInit {
   showTheCredits = false;
   showMenu = false;
 
-  constructor(private store: Store<State>) {
+  constructor(private store: Store<WeatherState>) {
     this.unitsToggleTo$ = store.select(state => state.unitsReducer.toggleTo);
   }
 

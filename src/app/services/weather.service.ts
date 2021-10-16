@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { forkJoin, Observable, of, timer } from 'rxjs';
 import { tap, catchError, switchMap, concatMapTo } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { State } from '../app.module';
+import { WeatherState } from '../app.module';
 import {
   setDay,
   setDayNightCalculationNotPossible,
@@ -32,7 +32,7 @@ export class WeatherService {
   constructor(
     private http: HttpClient,
     private refreshIndicatorService: RefreshIndicatorService,
-    private store: Store<State>
+    private store: Store<WeatherState>
   ) {}
 
   // getUserLocation: Fetch the user location and pass it along to the next Observable.

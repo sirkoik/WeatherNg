@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
-import { State } from 'src/app/app.module';
+import { WeatherState } from 'src/app/app.module';
 import { Wind } from 'src/app/types/Wind';
 
 @Component({
@@ -18,7 +18,7 @@ export class WindComponent implements OnInit {
     direction: 0
   };
 
-  constructor(private store: Store<State>) {
+  constructor(private store: Store<WeatherState>) {
     this.unitsSubscription = store
       .select(state => state)
       .subscribe(response => {

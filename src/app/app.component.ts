@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
-import { State } from './app.module';
+import { WeatherState } from './app.module';
 import { WeatherService } from './services/weather.service';
 import { WeatherData } from './types/WeatherData';
 
@@ -41,7 +41,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(
     private weatherService: WeatherService,
-    private store: Store<State>
+    private store: Store<WeatherState>
   ) {
     // subscribe to the continuous weather fetching Observable
     this.weatherSubscription = this.weatherService

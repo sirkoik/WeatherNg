@@ -62,7 +62,7 @@ import { ModeState } from './types/ModeState';
 })
 export class AppModule {}
 
-export interface State {
+export interface WeatherState {
   unitsReducer: UnitsState;
   modeReducer: ModeState;
 }

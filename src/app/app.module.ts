@@ -28,6 +28,7 @@ import { ModeState } from './types/ModeState';
 import { OverlayComponent } from './ui/overlay/overlay.component';
 import { LoadingSpinnerComponent } from './ui/loading-spinner/loading-spinner.component';
 import { AboutComponent } from './ui/about/about.component';
+import { SimpleLinkComponent } from './components/shared/simple-link/simple-link.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import { AboutComponent } from './ui/about/about.component';
     RefreshIndicatorComponent,
     OverlayComponent,
     LoadingSpinnerComponent,
-    AboutComponent
+    AboutComponent,
+    SimpleLinkComponent
   ],
   imports: [
     BrowserModule,

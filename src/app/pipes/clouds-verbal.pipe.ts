@@ -1,19 +1,15 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { WeatherService } from '../services/weather.service';
 
 @Pipe({
   name: 'cloudsVerbal'
 })
 export class CloudsVerbalPipe implements PipeTransform {
-  constructor(private weatherService: WeatherService) {}
-
-  transform(cloudinessPct: number, ...args: unknown[]): string {
+  transform(cloudinessPct: number, isDaytime: boolean): string {
     const cloudiness = cloudinessPct / 100;
 
-    // TODO in daytime, it's common to say "Sunny" instead of "Clear".
-    // TODO Check to make sure if this is working - probably need a BehaviorSubject to subscribe to changes
+    // During daytime, it's common to say "Sunny" instead of "Clear".
     // https://forecast.weather.gov/glossary.php?letter=s
-    const dayStatement = this.weatherService.isDaytime ? 'Sunny' : 'Clear';
+    const dayStatement = isDaytime ? 'Sunny' : 'Clear';
 
     if (cloudiness < 1 / 8) return dayStatement;
     if (cloudiness >= 1 / 8 && cloudiness < 3 / 8)

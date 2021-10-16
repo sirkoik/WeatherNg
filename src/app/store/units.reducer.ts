@@ -30,7 +30,7 @@ const _unitsReducer = createReducer(
       };
     }
 
-    console.log(stateNew.units);
+    console.log('[UnitsReducer] units', stateNew.units);
 
     return stateNew;
   })

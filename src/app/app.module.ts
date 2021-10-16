@@ -24,6 +24,8 @@ import { RefreshIndicatorComponent } from './ui/refresh-indicator/refresh-indica
 import { StoreModule } from '@ngrx/store';
 import { unitsReducer } from './store/units.reducer';
 import { UnitsState } from './types/UnitsState';
+import { modeReducer } from './store/mode.reducer';
+import { ModeState } from './types/ModeState';
 
 @NgModule({
   declarations: [
@@ -50,7 +52,10 @@ import { UnitsState } from './types/UnitsState';
   imports: [
     BrowserModule,
     HttpClientModule,
-    StoreModule.forRoot({ unitsReducer: unitsReducer }, {})
+    StoreModule.forRoot(
+      { unitsReducer: unitsReducer, modeReducer: modeReducer },
+      {}
+    )
   ],
   providers: [],
   bootstrap: [AppComponent]
@@ -59,4 +64,5 @@ export class AppModule {}
 
 export interface State {
   unitsReducer: UnitsState;
+  modeReducer: ModeState;
 }

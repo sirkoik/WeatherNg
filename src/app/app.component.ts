@@ -1,13 +1,8 @@
-import {
-  Component,
-  OnDestroy,
-  OnInit,
-  SystemJsNgModuleLoader
-} from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
-import { RefreshIndicatorService } from './services/refresh-indicator.service';
+import { State } from './app.module';
 import { WeatherService } from './services/weather.service';
-import { WeatherCondition } from './types/WeatherCondition';
 import { WeatherData } from './types/WeatherData';
 
 @Component({
@@ -17,6 +12,7 @@ import { WeatherData } from './types/WeatherData';
 })
 export class AppComponent implements OnInit, OnDestroy {
   loading = true;
+  isDay = true;
 
   // empty WeatherData object that is populated in the fetchWeater response.
   weatherData: WeatherData = {
@@ -41,25 +37,28 @@ export class AppComponent implements OnInit, OnDestroy {
 
   // subscribe to the weather http call Observable
   weatherSubscription!: Subscription;
-  dayNightSubscription!: Subscription;
+  dayNightSubscription: Subscription;
 
-  constructor(private weatherService: WeatherService) {}
-
-  ngOnInit() {
+  constructor(
+    private weatherService: WeatherService,
+    private store: Store<State>
+  ) {
     // subscribe to the continuous weather fetching Observable
     this.weatherSubscription = this.weatherService
       .fetchWeather('onecall')
       .subscribe(response => this.populateWeather(response));
 
-    // update the day/night state by listening to an event that is emitted
-    // when the day/night data is updated from the server.
-    this.dayNightSubscription = this.weatherService.updateDayNight.subscribe(
-      isDay => {
-        console.log('isDay?', isDay);
-        document.body.className = isDay ? 'daytime-bg' : 'nighttime-bg';
-      }
-    );
+    // subscribe to the day/night status in the mode state slice
+    this.dayNightSubscription = store
+      .select(state => state)
+      .subscribe(response => {
+        this.isDay = response.modeReducer.isDaytime;
+        document.body.className = this.isDay ? 'daytime-bg' : 'nighttime-bg';
+        console.log('[AppComponent] isDay? ', this.isDay);
+      });
   }
+
+  ngOnInit() {}
 
   ngOnDestroy() {
     this.weatherSubscription.unsubscribe();

@@ -1,8 +1,16 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { EventEmitter, Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { forkJoin, Observable, of, timer } from 'rxjs';
 import { tap, catchError, switchMap, concatMapTo } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { State } from '../app.module';
+import {
+  setDay,
+  setDayNightCalculationNotPossible,
+  setDayNightCalculationPossible,
+  setNight
+} from '../store/mode.actions';
 
 import { DefaultGeolocationPosition } from '../types/default-geolocation-position';
 import { RefreshIndicatorService } from './refresh-indicator.service';
@@ -11,11 +19,8 @@ import { RefreshIndicatorService } from './refresh-indicator.service';
   providedIn: 'root'
 })
 export class WeatherService {
-  isMetric = true;
-  isDaytime = true;
   initialRun = true;
-  updateDayNight: EventEmitter<boolean> = new EventEmitter();
-
+  refresh = true;
   latitude = 45;
   longitude = 20;
   place = 'London';
@@ -26,7 +31,8 @@ export class WeatherService {
 
   constructor(
     private http: HttpClient,
-    private refreshIndicatorService: RefreshIndicatorService
+    private refreshIndicatorService: RefreshIndicatorService,
+    private store: Store<State>
   ) {}
 
   // getUserLocation: Fetch the user location and pass it along to the next Observable.
@@ -102,7 +108,8 @@ export class WeatherService {
           concatMapTo(obs),
           tap(() => {
             if (this.initialRun) {
-              this.refreshIndicatorService.subscribeToRefresh();
+              if (this.refresh)
+                this.refreshIndicatorService.subscribeToRefresh();
             }
             this.initialRun = false;
           })
@@ -131,19 +138,25 @@ export class WeatherService {
       .pipe(
         tap(response => {
           // update day/night by emitting event that the app component listens to.
+          // now that the response is successful, it's possible to calculate whether
+          // it is day or night.
+          this.store.dispatch(setDayNightCalculationPossible());
+
+          // calculate whether it is day or night.
           const isDaytime = this.getIsDaytime(
             response.current.sunrise,
             response.current.sunset
           );
 
-          if (this.initialRun || isDaytime != this.isDaytime) {
-            this.isDaytime = isDaytime;
-            this.updateDayNight.next(isDaytime);
-          }
+          if (isDaytime) this.store.dispatch(setDay());
+          if (!isDaytime) this.store.dispatch(setNight());
 
           console.log('OpenWeatherMap response', response);
         }),
         catchError((error, caught) => {
+          // It's not possible to calculate whether it is day or night because there
+          // is no sunrise/sunset data.
+          this.store.dispatch(setDayNightCalculationNotPossible());
           console.log('error with OpenWeatherMap');
           return of([]);
         })

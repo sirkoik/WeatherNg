@@ -5,7 +5,8 @@ import { toggle } from './units.actions';
 export const initialState: UnitsState = {
   units: 'metric',
   temp: 'c',
-  speed: 'km/h'
+  speed: 'km/h',
+  toggleTo: 'imperial'
 };
 
 const _unitsReducer = createReducer(
@@ -16,14 +17,16 @@ const _unitsReducer = createReducer(
       stateNew = {
         units: 'imperial',
         temp: 'f',
-        speed: 'mph'
+        speed: 'mph',
+        toggleTo: 'metric'
       };
     }
     if (state.units == 'imperial') {
       stateNew = {
         units: 'metric',
         temp: 'c',
-        speed: 'km/h'
+        speed: 'km/h',
+        toggleTo: 'imperial'
       };
     }
 

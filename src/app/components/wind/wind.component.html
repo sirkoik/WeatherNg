@@ -4,10 +4,11 @@
     <!-- TODO improve wind gust layout -->
     <div>
       wind: {{ wind.speed | speedConvert: 'kmh' | number: '1.0-1' }}
-      <span *ngIf="!wind.gust">km/h</span>
-      <span *ngIf="wind.gust">km/h, </span>
+      <span *ngIf="!wind.gust">{{ windUnits }}</span>
+      <span *ngIf="wind.gust">{{ windUnits }}, </span>
       <span *ngIf="wind.gust"
-        >{{ wind.gust | speedConvert: 'kmh' | number: '1.0-1' }} km/h gust</span
+        >{{ wind.gust | speedConvert: windUnits | number: '1.0-1' }}
+        {{ windUnits }} gust</span
       >
     </div>
   </div>

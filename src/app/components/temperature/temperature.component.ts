@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { Subscription } from 'rxjs';
 // import { Observable } from 'rxjs';
 import { State } from 'src/app/app.module';
 
@@ -12,6 +13,7 @@ export class TemperatureComponent implements OnInit {
   @Input() temperature: number = 0;
   @Input() temperatureFeels: number = 0;
   //tempUnits$: Observable<string>;
+  unitsSubscription: Subscription;
 
   tempConvertTo = 'c';
 
@@ -24,7 +26,7 @@ export class TemperatureComponent implements OnInit {
     );
     //this.tempUnits$ = store.select(state => state.unitsReducer.temp);
 
-    store
+    this.unitsSubscription = store
       .select(state => state)
       .subscribe(response => {
         this.tempConvertTo =
@@ -34,4 +36,8 @@ export class TemperatureComponent implements OnInit {
   }
 
   ngOnInit(): void {}
+
+  ngOnDestroy(): void {
+    this.unitsSubscription.unsubscribe();
+  }
 }

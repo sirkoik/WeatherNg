@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Subscription, timer } from 'rxjs';
 
 @Component({
   selector: 'app-moon',
@@ -7,6 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MoonComponent implements OnInit {
   phase: string = '';
+  phaseSubscription: Subscription;
 
   // phases = [
   //   {
@@ -69,10 +71,18 @@ export class MoonComponent implements OnInit {
 
   // phase = this.phases[0];
 
-  constructor() {}
+  constructor() {
+    // check the moon phase every five seconds, update if changed
+    this.phaseSubscription = timer(0, 5000).subscribe(() => {
+      const newPhase = this.getPhase();
+      if (newPhase !== this.phase) this.phase = newPhase;
+    });
+  }
 
-  ngOnInit(): void {
-    this.phase = this.getPhase();
+  ngOnInit(): void {}
+
+  ngOnDestroy(): void {
+    this.phaseSubscription.unsubscribe();
   }
 
   // code adapted from Jason Sturges

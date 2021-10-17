@@ -6,22 +6,81 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./moon.component.sass']
 })
 export class MoonComponent implements OnInit {
-  moon: { phase: string; illumination: number } = {
-    phase: '',
-    illumination: 0
-  };
+  phase: string = '';
+
+  // phases = [
+  //   {
+  //     name: 'New Moon',
+  //     ageMin: 0,
+  //     ageMax: 1,
+  //     illumMin: 0,
+  //     illumMax: 0.1
+  //   },
+  //   {
+  //     name: 'Waxing Crescent',
+  //     ageMin: 1,
+  //     ageMax: 7,
+  //     illumMin: 0.1,
+  //     illumMax: 50
+  //   },
+  //   {
+  //     name: 'First quarter',
+  //     ageMin: 7,
+  //     ageMax: 8,
+  //     illumMin: 50,
+  //     illumMax: 50.1
+  //   },
+  //   {
+  //     name: 'Waxing Gibbous',
+  //     ageMin: 8,
+  //     AgeMax: 14,
+  //     illumMin: 50.1,
+  //     illumMax: 99
+  //   },
+  //   {
+  //     name: 'Full',
+  //     ageMin: 14,
+  //     ageMax: 16,
+  //     illumMin: 99,
+  //     illumMax: 100
+  //   },
+  //   {
+  //     name: 'Waning Gibbous',
+  //     ageMin: 16,
+  //     ageMax: 21.765,
+  //     illumMin: 50.1,
+  //     illumMax: 99
+  //   },
+  //   {
+  //     name: 'Third Quarter',
+  //     ageMin: 21.765,
+  //     ageMax: 22.765,
+  //     illumMin: 50,
+  //     illumMax: 50.1
+  //   },
+  //   {
+  //     name: 'Waning Crescent',
+  //     ageMin: 22.765,
+  //     ageMax: 28.53,
+  //     illumMin: 0.1,
+  //     illumMax: 50
+  //   }
+  // ];
+
+  // phase = this.phases[0];
+
   constructor() {}
 
   ngOnInit(): void {
-    this.moon = this.getPhase();
+    this.phase = this.getPhase();
   }
 
   // code adapted from Jason Sturges
   // https://jasonsturges.medium.com/moons-lunar-phase-in-javascript-a5219acbfe6e
-  // added adjustment factor based on
-  // https://stardate.org/nightsky/moon
-  // TODO moon phase is still somewhat inaccurate.
-  getPhase(): { phase: string; illumination: number } {
+  // Moon phase is relatively easy to get based on date and timezone offset.
+  // Percent illumination is somewhat more difficult because it needs to be an
+  // accurate number.
+  getPhase(): string {
     const getJulianDate = (date: Date = new Date()): number => {
       const t = date.getTime();
       const offset = date.getTimezoneOffset();
@@ -36,9 +95,8 @@ export class MoonComponent implements OnInit {
     let lunarPctNormalized = lunarPct - Math.floor(lunarPct);
     if (lunarPctNormalized < 0) lunarPctNormalized += 1;
 
-    const pctLunation = (1.1 + lunarPctNormalized * LUNAR_MONTH) / LUNAR_MONTH;
-    const pctIllumination =
-      pctLunation < 1 ? 2 * pctLunation : 2 * (1 - pctLunation);
+    const pctLunation = (lunarPctNormalized * LUNAR_MONTH) / LUNAR_MONTH;
+    //const pctIllumination = Math.sin(Math.PI * pctLunation);
 
     let phase = 'new moon';
     if (pctLunation > 0) phase = 'new moon';
@@ -51,6 +109,6 @@ export class MoonComponent implements OnInit {
     if (pctLunation > 0.8) phase = 'waning crescent';
     if (pctLunation > 0.95) phase = 'new moon';
 
-    return { phase: phase, illumination: 100 * pctIllumination };
+    return phase;
   }
 }

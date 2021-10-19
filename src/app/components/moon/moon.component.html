@@ -1,4 +1,7 @@
 <div class="item-box">
   <div>{{ phase.iconN }}</div>
-  <div>{{ phase.name | titlecase }}</div>
+  <div>
+    {{ phase.name | titlecase }},
+    {{ this.illumination * 100 | number: '1.0-1' }}% illuminated
+  </div>
 </div>

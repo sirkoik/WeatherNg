@@ -52,11 +52,16 @@ export class WeatherService {
         navigator.geolocation.getCurrentPosition(
           position => observer.next(position),
           positionError => {
-            observer.next(this.fillDefault());
-            // don't error out
-            // observer.error(positionError);
+            //observer.next(this.fillDefault());
+            // now error is handed to the effect, which dispatches the appropriate action.
+            // TODO continue the observable stream.
+            //console.log('position error');
+            observer.error(positionError);
+            //observer.error(this.fillDefault());
           },
           {
+            timeout: 10000,
+            maximumAge: 240000,
             enableHighAccuracy: true
           }
         );

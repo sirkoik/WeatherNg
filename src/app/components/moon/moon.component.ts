@@ -138,7 +138,7 @@ export class MoonComponent implements OnInit {
     const pctLunation = (lunarPctNormalized * LUNAR_MONTH) / LUNAR_MONTH;
     const age = lunarPctNormalized * LUNAR_MONTH;
 
-    console.log('age', age);
+    // console.log('age', age);
 
     return (
       this.phases.find(phase => {

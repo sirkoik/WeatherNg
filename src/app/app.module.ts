@@ -22,13 +22,14 @@ import { MoonComponent } from './components/moon/moon.component';
 import { RefreshIndicatorComponent } from './ui/refresh-indicator/refresh-indicator.component';
 import { StoreModule } from '@ngrx/store';
 import { unitsReducer } from './store/units.reducer';
-import { UnitsState } from './types/UnitsState';
 import { modeReducer } from './store/mode.reducer';
-import { ModeState } from './types/ModeState';
 import { OverlayComponent } from './ui/overlay/overlay.component';
 import { LoadingSpinnerComponent } from './ui/loading-spinner/loading-spinner.component';
 import { AboutComponent } from './ui/about/about.component';
 import { SimpleLinkComponent } from './components/shared/simple-link/simple-link.component';
+import { locationReducer } from './store/location.reducer';
+import { EffectsModule } from '@ngrx/effects';
+import { LocationEffects } from './store/location.effects';
 
 @NgModule({
   declarations: [
@@ -59,16 +60,18 @@ import { SimpleLinkComponent } from './components/shared/simple-link/simple-link
     BrowserModule,
     HttpClientModule,
     StoreModule.forRoot(
-      { unitsReducer: unitsReducer, modeReducer: modeReducer },
+      {
+        unitsReducer: unitsReducer,
+        modeReducer: modeReducer,
+        locationReducer: locationReducer
+      },
       {}
-    )
+    ),
+    EffectsModule.forRoot([LocationEffects])
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
 
-export interface WeatherState {
-  unitsReducer: UnitsState;
-  modeReducer: ModeState;
-}
+export { WeatherState } from './types/WeatherState';

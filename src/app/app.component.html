@@ -1,4 +1,4 @@
-<app-overlay *ngIf="loading">
+<app-overlay *ngIf="loading && !(geolocationPositionError$ | async)">
   <app-loading-spinner></app-loading-spinner>
 </app-overlay>
 
@@ -10,7 +10,12 @@
 
 <app-menu></app-menu>
 
+<div class="error-bar" *ngIf="geolocationPositionError$ | async">
+  Error: {{ (geolocationPositionError$ | async)!.message }}
+</div>
+
 <div *ngIf="!loading" class="weather">
+  <!-- <div>{{ (location$ | async)!.coords.latitude }}</div> -->
   <div class="city">{{ weatherData.cityName }}</div>
   <app-temperature
     [temperature]="weatherData.temperature"

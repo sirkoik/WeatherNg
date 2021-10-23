@@ -3,8 +3,10 @@ import { Store } from '@ngrx/store';
 import { Observable, ObservableInput, Subscription } from 'rxjs';
 import { WeatherState } from './app.module';
 import { WeatherService } from './services/weather.service';
+import { getUserLocation } from './store/location.actions';
 import { hideAbout, setLoading } from './store/mode.actions';
 import { WeatherData } from './types/WeatherData';
+import { WeatherLocation } from './types/WeatherLocation';
 
 @Component({
   selector: 'app-root',
@@ -36,22 +38,30 @@ export class AppComponent implements OnInit, OnDestroy {
   };
 
   // subscribe to the weather http call Observable
-  weatherSubscription: Subscription;
+  // weatherSubscription: Subscription;
   dayNightSubscription: Subscription;
   loadingSubscription: Subscription;
 
   showAbout$: Observable<boolean>;
+  location$: Observable<WeatherLocation> = this.store.select(
+    state => state.locationReducer
+  );
+  geolocationPositionError$: Observable<GeolocationPositionError | null> =
+    this.store.select(state => state.locationReducer.error);
 
   constructor(
     private weatherService: WeatherService,
     private store: Store<WeatherState>
   ) {
+    // dispatch the action for retrieving user location in the store.
+    store.dispatch(getUserLocation());
+
     store.dispatch(setLoading({ isLoading: true }));
 
     // subscribe to the continuous weather fetching Observable
-    this.weatherSubscription = this.weatherService
-      .fetchWeather('onecall')
-      .subscribe(response => this.populateWeather(response));
+    // this.weatherSubscription = this.weatherService
+    //   .fetchWeather('onecall')
+    //   .subscribe(response => this.populateWeather(response));
 
     // subscribe to the day/night status in the mode state slice
     this.dayNightSubscription = store
@@ -74,7 +84,7 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnInit() {}
 
   ngOnDestroy() {
-    this.weatherSubscription.unsubscribe();
+    // this.weatherSubscription.unsubscribe();
     this.dayNightSubscription.unsubscribe();
   }
 

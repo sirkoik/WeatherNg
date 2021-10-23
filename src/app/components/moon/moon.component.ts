@@ -136,20 +136,15 @@ export class MoonComponent implements OnInit {
     if (lunarPctNormalized < 0) lunarPctNormalized += 1;
 
     const pctLunation = (lunarPctNormalized * LUNAR_MONTH) / LUNAR_MONTH;
-    //const pctIllumination = Math.sin(Math.PI * pctLunation);
+    const age = lunarPctNormalized * LUNAR_MONTH;
 
-    let phase = this.phases[0];
-    if (pctLunation > 0) phase = this.phases[0];
-    if (pctLunation > 0.05) phase = this.phases[1];
-    if (pctLunation > 0.2) phase = this.phases[2];
-    if (pctLunation > 0.3) phase = this.phases[3];
-    if (pctLunation > 0.48) phase = this.phases[4];
-    if (pctLunation > 0.52) phase = this.phases[5];
-    if (pctLunation > 0.7) phase = this.phases[6];
-    if (pctLunation > 0.8) phase = this.phases[7];
-    if (pctLunation > 0.95) phase = this.phases[8];
+    console.log('age', age);
 
-    return phase;
+    return (
+      this.phases.find(phase => {
+        return phase.ageMin < age && age < phase.ageMax;
+      }) || this.phases[0]
+    );
   }
 
   // getIllumination: get the lunar illumination in percent.
@@ -195,7 +190,7 @@ export class MoonComponent implements OnInit {
 
     //console.log("T, D, M, M'", T, DsmallDeg, MsmallDeg, MpsmallDeg);
 
-    const toRad = (deg: number) => (deg * Math.PI) / 360;
+    const toRad = (deg: number): number => (deg * Math.PI) / 360;
 
     // this angle is given in degrees. Since math functions take radians,
     // the inputs must be converted to radians, but the overall result

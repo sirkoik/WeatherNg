@@ -30,6 +30,8 @@ import { SimpleLinkComponent } from './components/shared/simple-link/simple-link
 import { locationReducer } from './store/location.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { LocationEffects } from './store/location.effects';
+import { weatherReducer } from './store/weather.reducer';
+import { WeatherEffects } from './store/weather.effects';
 
 @NgModule({
   declarations: [
@@ -63,11 +65,12 @@ import { LocationEffects } from './store/location.effects';
       {
         unitsReducer: unitsReducer,
         modeReducer: modeReducer,
-        locationReducer: locationReducer
+        locationReducer: locationReducer,
+        weatherReducer: weatherReducer
       },
       {}
     ),
-    EffectsModule.forRoot([LocationEffects])
+    EffectsModule.forRoot([LocationEffects, WeatherEffects])
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,6 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable, ObservableInput, Subscription } from 'rxjs';
+import {
+  BehaviorSubject,
+  Observable,
+  ObservableInput,
+  Subscription
+} from 'rxjs';
 import { WeatherState } from './app.module';
 import { WeatherService } from './services/weather.service';
 import { getUserLocation } from './store/location.actions';
@@ -15,33 +20,16 @@ import { WeatherLocation } from './types/WeatherLocation';
   styleUrls: ['./app.component.sass']
 })
 export class AppComponent implements OnInit, OnDestroy {
-  loading = true;
+  // state of whether the app is loading or not
+  loading$: Observable<boolean> = this.store.select(
+    state => state.modeReducer.isLoading
+  );
   isDay = true;
   showAbout = false;
-
-  // empty WeatherData object that is populated in the fetchWeater response.
-  // weatherData: WeatherData = {
-  //   cityName: 'London (default)',
-  //   temperature: 0,
-  //   temperatureFeels: 0,
-  //   cloudCover: 0,
-  //   humidity: 0,
-  //   sun: {
-  //     sunrise: 0,
-  //     sunset: 0
-  //   },
-  //   uvi: 0,
-  //   wind: {
-  //     speed: 0,
-  //     direction: 0
-  //   },
-  //   weatherConditions: []
-  // };
 
   // subscribe to the weather http call Observable
   // weatherSubscription: Subscription;
   dayNightSubscription: Subscription;
-  loadingSubscription: Subscription;
 
   showAbout$: Observable<boolean>;
   location$: Observable<WeatherLocation> = this.store.select(
@@ -50,6 +38,7 @@ export class AppComponent implements OnInit, OnDestroy {
   geolocationPositionError$: Observable<GeolocationPositionError | null> =
     this.store.select(state => state.locationReducer.error);
 
+  // Weather data. Block of components loads when WeatherData loads.
   weather$: Observable<WeatherData> = this.store.select(
     state => state.weatherReducer
   );
@@ -72,12 +61,6 @@ export class AppComponent implements OnInit, OnDestroy {
         this.isDay = isDayTime;
         document.body.className = this.isDay ? 'daytime-bg' : 'nighttime-bg';
         console.log('[AppComponent] isDay? ', this.isDay);
-      });
-
-    this.loadingSubscription = store
-      .select(state => state.modeReducer.isLoading)
-      .subscribe(isLoading => {
-        this.loading = isLoading;
       });
 
     this.showAbout$ = store.select(state => state.modeReducer.showAbout);

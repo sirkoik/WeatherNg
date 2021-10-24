@@ -1,4 +1,4 @@
-<app-overlay *ngIf="loading && !(geolocationPositionError$ | async)">
+<app-overlay *ngIf="loading$ | async">
   <app-loading-spinner></app-loading-spinner>
 </app-overlay>
 
@@ -6,30 +6,27 @@
   <app-about></app-about>
 </app-overlay>
 
-<app-refresh-indicator *ngIf="!loading"></app-refresh-indicator>
+<app-refresh-indicator
+  *ngIf="(loading$ | async) === false"
+></app-refresh-indicator>
 
 <app-menu></app-menu>
 
-<div class="error-bar" *ngIf="geolocationPositionError$ | async">
-  Error: {{ (geolocationPositionError$ | async)!.message }}
+<div class="error-bar" *ngIf="geolocationPositionError$ | async as error">
+  Error: {{ error.message }}
 </div>
 
-<div *ngIf="!loading" class="weather">
+<div *ngIf="weather$ | async as weather" class="weather">
   <!-- <div>{{ (location$ | async)!.coords.latitude }}</div> -->
-  <div class="city">{{ (weather$ | async)?.cityName }}</div>
+  <div class="city">{{ weather.cityName }}</div>
   <app-temperature
-    [temperature]="(weather$ | async)!.temperature"
-    [temperatureFeels]="(weather$ | async)!.temperatureFeels"
+    [temperature]="weather.temperature || 0"
+    [temperatureFeels]="weather.temperatureFeels"
   ></app-temperature>
-  <app-wind [wind]="(weather$ | async)!.wind"></app-wind>
-  <app-humidity [humidity]="(weather$ | async)!.humidity"></app-humidity>
-  <app-conditions
-    [conditions]="(weather$ | async)!.weatherConditions"
-  ></app-conditions>
-  <app-uvi
-    *ngIf="(weather$ | async)!.uvi > 0"
-    [level]="(weather$ | async)!.uvi"
-  ></app-uvi>
-  <app-sun [sun]="(weather$ | async)!.sun"></app-sun>
+  <app-wind [wind]="weather.wind"></app-wind>
+  <app-humidity [humidity]="weather.humidity"></app-humidity>
+  <app-conditions [conditions]="weather.weatherConditions"></app-conditions>
+  <app-uvi *ngIf="weather.uvi > 0" [level]="weather.uvi"></app-uvi>
+  <app-sun [sun]="weather.sun"></app-sun>
   <app-moon></app-moon>
 </div>

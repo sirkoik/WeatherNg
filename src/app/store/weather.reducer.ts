@@ -3,7 +3,6 @@ import { WeatherData } from '../types/WeatherData';
 import { fetchWeather, loadWeather } from './weather.actions';
 
 export const initialState: WeatherData = {
-  cityName: '',
   temperature: 0,
   temperatureFeels: 0,
   cloudCover: 0,
@@ -29,7 +28,7 @@ const _weatherReducer = createReducer(
   on(loadWeather, (state, action) => {
     console.log('[WeatherReducer] loadWeather', action);
     const cur = action.weatherData.current;
-    const updatedWeatherData = {
+    const updatedWeatherData: WeatherData = {
       temperature: cur.temp,
       temperatureFeels: cur.feels_like,
       cloudCover: cur.clouds,
@@ -46,6 +45,7 @@ const _weatherReducer = createReducer(
       weatherConditions: cur.weather
     };
 
+    // This doesn't overwrite the city name if it exists.
     return { ...state, ...updatedWeatherData };
   })
 );

@@ -16,15 +16,20 @@
 
 <div *ngIf="!loading" class="weather">
   <!-- <div>{{ (location$ | async)!.coords.latitude }}</div> -->
-  <div class="city">{{ weatherData.cityName }}</div>
+  <div class="city">{{ (weather$ | async)?.cityName }}</div>
   <app-temperature
-    [temperature]="weatherData.temperature"
-    [temperatureFeels]="weatherData.temperatureFeels"
+    [temperature]="(weather$ | async)!.temperature"
+    [temperatureFeels]="(weather$ | async)!.temperatureFeels"
   ></app-temperature>
-  <app-wind [wind]="weatherData.wind"></app-wind>
-  <app-humidity [humidity]="weatherData.humidity"></app-humidity>
-  <app-conditions [conditions]="weatherData.weatherConditions"></app-conditions>
-  <app-uvi *ngIf="weatherData.uvi > 0" [level]="weatherData.uvi"></app-uvi>
-  <app-sun [sun]="weatherData.sun"></app-sun>
+  <app-wind [wind]="(weather$ | async)!.wind"></app-wind>
+  <app-humidity [humidity]="(weather$ | async)!.humidity"></app-humidity>
+  <app-conditions
+    [conditions]="(weather$ | async)!.weatherConditions"
+  ></app-conditions>
+  <app-uvi
+    *ngIf="(weather$ | async)!.uvi > 0"
+    [level]="(weather$ | async)!.uvi"
+  ></app-uvi>
+  <app-sun [sun]="(weather$ | async)!.sun"></app-sun>
   <app-moon></app-moon>
 </div>

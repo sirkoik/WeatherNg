@@ -1,9 +1,13 @@
 import { Action, createReducer, on } from '@ngrx/store';
 import { WeatherLocation } from '../types/WeatherLocation';
 import {
+  detailedLocationRetrievalFailure,
+  detailedLocationRetrievalSuccess,
   getUserLocation,
   locationRetrievalFailure,
-  locationRetrievalSuccess
+  locationRetrievalSuccess,
+  retrieveWeatherData,
+  retriveDetailedLocation
 } from './location.actions';
 
 export const initialState: WeatherLocation = {
@@ -12,7 +16,9 @@ export const initialState: WeatherLocation = {
     latitude: 0,
     longitude: 0
   },
-  error: null
+  error: null,
+  warning: null,
+  city: ''
 };
 
 const _locationReducer = createReducer(
@@ -33,6 +39,29 @@ const _locationReducer = createReducer(
       action.payload
     );
     return { ...state, locationSuccess: false, error: action.payload };
+  }),
+  on(retriveDetailedLocation, state => {
+    console.log('[LocationReducer] retrieving detailed location.');
+    return { ...state, locationSuccess: true };
+  }),
+  on(detailedLocationRetrievalSuccess, (state, action) => {
+    console.log(
+      '[LocationReducer] Detailed location retrieval success',
+      action
+    );
+    return {
+      ...state,
+      city: action.payload.address.city,
+      locationSuccess: true
+    };
+  }),
+  // detailed location retrieval is not necessary for the functioning of the app;
+  // therefore, failure populates the warning prop in the state.
+  on(detailedLocationRetrievalFailure, (state, action) => {
+    return { ...state, locationSuccess: true, warning: action.payload.error };
+  }),
+  on(retrieveWeatherData, (state, action) => {
+    return { ...state };
   })
 );
 

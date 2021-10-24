@@ -4,5 +4,7 @@ export type WeatherLocation = {
     longitude: number;
   };
   error: GeolocationPositionError | null;
+  warning: Error | null;
   locationSuccess: boolean;
+  city: string;
 };

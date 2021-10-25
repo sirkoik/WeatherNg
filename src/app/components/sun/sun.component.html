@@ -2,7 +2,7 @@
   <li *ngIf="sinceSunrise > 0 && sinceSunrise < tilSunset">
     {{ sinceSunrise / 1000 | timespan: 'hm' }} since sunrise
   </li>
-  <li *ngIf="sinceSunset > 0 && sinceSunset < tilSunrise">
+  <li *ngIf="(sinceSunset > 0 && sinceSunset < tilSunrise) || tilSunrise < 1">
     {{ sinceSunset / 1000 | timespan: 'hm' }} since sunset
   </li>
   <li *ngIf="tilSunrise > 0">

@@ -34,8 +34,8 @@ const _weatherReducer = createReducer(
       cloudCover: cur.clouds,
       humidity: cur.humidity,
       sun: {
-        sunrise: cur.sunrise,
-        sunset: cur.sunset
+        sunrise: cur.sunrise * 1000,
+        sunset: cur.sunset * 1000
       },
       uvi: cur.uvi,
       wind: {

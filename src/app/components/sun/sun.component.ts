@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { Observable, timer } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { Sun } from 'src/app/types/Sun';
@@ -30,12 +30,7 @@ export class SunComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dayStart = this.sun.sunrise - (this.sun.sunrise % 8.64e7);
-    this.dayEnd = this.dayStart + 8.64e7;
-    this.dayPct =
-      (100 * (this.sun.sunset - this.sun.sunrise)) /
-      (this.dayEnd - this.dayStart);
-    this.nightPct = 100 - this.dayPct;
+    this.updateSunCalculations();
 
     // update "time til / since" sunrise/sunset every five seconds.
     // this could be done with a setInterval, but an RxJS Observable
@@ -54,7 +49,21 @@ export class SunComponent implements OnInit {
       .subscribe();
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    this.updateSunCalculations();
+  }
+
   tsToDate(ts: number): Date {
     return new Date(ts);
+  }
+
+  updateSunCalculations(): void {
+    console.log('[SunComponent] sun', this.sun);
+    this.dayStart = this.sun.sunrise - (this.sun.sunrise % 8.64e7);
+    this.dayEnd = this.dayStart + 8.64e7;
+    this.dayPct =
+      (100 * (this.sun.sunset - this.sun.sunrise)) /
+      (this.dayEnd - this.dayStart);
+    this.nightPct = 100 - this.dayPct;
   }
 }

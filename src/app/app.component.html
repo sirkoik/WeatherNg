@@ -6,9 +6,7 @@
   <app-about></app-about>
 </app-overlay>
 
-<app-refresh-indicator
-  *ngIf="(loading$ | async) === false"
-></app-refresh-indicator>
+<app-refresh-indicator *ngIf="!(loading$ | async)"></app-refresh-indicator>
 
 <app-menu></app-menu>
 

@@ -8,7 +8,7 @@ import { Component, Input, OnInit } from '@angular/core';
 export class CompassComponent implements OnInit {
   @Input() angle: number = 0;
 
-  ImagePath = '/assets/compass-needle.svg';
+  ImagePath = 'assets/compass-needle.svg';
 
   constructor() {}
 
